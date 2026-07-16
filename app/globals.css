@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #c42221;
+  --primary-rgb: 196, 34, 33;
+  --accent-color: #8b1818;
+  --theme-body-text: #111827;
+  --theme-muted-text: #4b5563;
+  --theme-page-canvas: #f3f4f6;
+  --theme-font-heading: "Trebuchet MS", "Segoe UI", sans-serif;
+  --theme-font-body: "Segoe UI", "Tahoma", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--theme-page-canvas);
+  color: var(--theme-body-text);
+  font-family: var(--theme-font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--theme-font-heading);
+}
