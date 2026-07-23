@@ -11,6 +11,7 @@
   --theme-page-canvas: #f3f4f6;
   --theme-font-heading: "Trebuchet MS", "Segoe UI", sans-serif;
   --theme-font-body: "Segoe UI", "Tahoma", sans-serif;
+  --theme-font-display: "DALEK", "Arial Narrow", "Trebuchet MS", sans-serif;
 }
 
 * {
@@ -36,4 +37,36 @@ h4,
 h5,
 h6 {
   font-family: var(--theme-font-heading);
+}
+
+.display-font {
+  font-family: var(--theme-font-display);
+  letter-spacing: 0.055em;
+}
+
+.technical-label {
+  font-family: var(--theme-font-display);
+  letter-spacing: 0.14em;
+}
+
+.site-grid {
+  background-image: linear-gradient(rgba(196, 34, 33, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196, 34, 33, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.angled-rule {
+  position: relative;
+}
+
+.angled-rule::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 38%;
+  height: 4px;
+  background: var(--primary-color);
+  transform: skewX(-35deg);
+  transform-origin: left;
 }
