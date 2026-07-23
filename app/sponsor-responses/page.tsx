@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { readFile } from "fs/promises";
 import { ArrowLeft, ClipboardList, ExternalLink } from "lucide-react";
 import path from "path";
@@ -39,16 +40,17 @@ export default async function SponsorResponsesPage() {
   const submissions = await getSubmissions();
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-950">
-      <section className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="site-grid min-h-screen bg-gray-50 text-gray-950">
+      <section className="relative overflow-hidden border-b border-gray-200 bg-white">
+        <Image src="/greek-assets/cropped/laurel-branch.png" alt="" aria-hidden="true" width={1102} height={618} className="pointer-events-none absolute right-12 top-2 hidden w-44 opacity-20 lg:block" />
+        <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
           <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-red-700 hover:text-red-800">
             <ArrowLeft size={16} /> Back to site
           </Link>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="mb-3 text-sm font-bold uppercase tracking-wide text-red-700">Sponsor Responses</p>
-              <h1 className="text-4xl font-black">Sponsorship form submissions</h1>
+              <h1 className="display-font text-4xl font-black">Sponsorship form submissions</h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-600">
                 This local development page reads submissions saved by the intake form. A production version should require login and connect to Google Sheets, Airtable, Firebase, or another secure database.
               </p>

@@ -528,6 +528,9 @@ export default function MagnatechPublicSite() {
                   </div>
                   <p className="mt-5 text-sm font-bold uppercase tracking-wide text-red-700">{season.year}</p>
                   <h3 className="mt-2 text-2xl font-black">{season.game}</h3>
+                  {season.robotName && (
+                    <p className="technical-label mt-2 text-xs font-bold text-[#a3771e]">Robot: {season.robotName}</p>
+                  )}
                   <p className="mt-3 text-sm leading-6 text-gray-600">{season.summary}</p>
                 </a>
               ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { FormEvent, useMemo, useState } from "react";
 import {
   Amphora,
@@ -80,16 +81,17 @@ export default function SponsorIntakePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-950">
-      <section className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="site-grid min-h-screen bg-gray-50 text-gray-950">
+      <section className="relative overflow-hidden border-b border-gray-200 bg-white">
+        <Image src="/greek-assets/cropped/column-gold.png" alt="" aria-hidden="true" width={570} height={807} className="pointer-events-none absolute -right-10 -bottom-40 hidden w-48 opacity-10 lg:block" />
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
           <Link href="/#sponsors" className="inline-flex w-fit items-center gap-2 text-sm font-bold text-red-700 hover:text-red-800">
             <ArrowLeft size={16} /> Sponsor tiers
           </Link>
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
             <div>
               <p className="mb-3 text-sm font-bold uppercase tracking-wide text-red-700">Sponsorship Intake</p>
-              <h1 className="text-4xl font-black leading-tight sm:text-5xl">Sponsor MAGNAtech</h1>
+              <h1 className="display-font text-4xl font-black leading-tight sm:text-5xl">Sponsor MAGNAtech</h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-gray-600">
                 This form helps WM Rebel Robotics, FRC Team 3468, collect sponsor details, contribution preferences, and logo files for shirts, banners, robot placement, and recognition.
               </p>
@@ -106,7 +108,8 @@ export default function SponsorIntakePage() {
       </section>
 
       <section className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[0.72fr_0.28fr] lg:px-8">
-        <form onSubmit={handleSubmit} className="space-y-6 rounded border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
+        <form onSubmit={handleSubmit} className="relative space-y-6 overflow-hidden rounded border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
+          <Image src="/greek-assets/cropped/laurel-vine.png" alt="" aria-hidden="true" width={164} height={864} className="pointer-events-none absolute right-5 top-5 w-8 rotate-45 opacity-10" />
           <div>
             <div className="mb-5 flex items-center gap-3">
               <Building2 className="text-red-700" size={24} />
