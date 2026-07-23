@@ -284,7 +284,7 @@ export default function MagnatechPublicSite() {
           </div>
           <div className="relative rounded border border-[#c59a3d]/50 bg-white/10 p-5 shadow-2xl backdrop-blur">
             <div className="pointer-events-none absolute -right-3 -top-3 rounded-full border border-[#d5ad55]/60 bg-gray-950/80 p-2 text-[#d5ad55]" aria-hidden="true">
-              <Image src="/greek-assets/cropped/gear-gold.png" alt="" width={586} height={586} />
+              <Image src="/greek-assets/cropped/gear-gold.png" alt="" width={586} height={586} className="h-5 w-5" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               {communityStats.map(([value, label]) => (
