@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
   Amphora,
   ArrowRight,
@@ -251,6 +252,20 @@ function Nav() {
 }
 
 export default function MagnatechPublicSite() {
+  const [calendarEvents, setCalendarEvents] = useState(eventList);
+
+  useEffect(() => {
+    fetch("/api/calendar")
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Unable to load calendar events.");
+        }
+        return response.json() as Promise<{ events: typeof eventList }>;
+      })
+      .then(({ events }) => setCalendarEvents(events))
+      .catch(() => undefined);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-950">
       <Nav />
@@ -492,7 +507,7 @@ export default function MagnatechPublicSite() {
               </div>
             </div>
             <div className="overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
-              {eventList.map((event) => (
+              {calendarEvents.map((event) => (
                 <div key={event.title} className="grid gap-3 border-b border-gray-200 p-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:items-center">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wide text-red-700">{event.type}</p>

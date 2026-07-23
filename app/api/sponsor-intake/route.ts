@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
+import { adminSessionCookie, isValidAdminSession } from "@/lib/admin-auth";
 
 const allowedLogoTypes = new Set(["image/svg+xml", "image/png", "application/pdf"]);
 const maxLogoSizeBytes = 10 * 1024 * 1024;
@@ -27,7 +29,11 @@ async function saveSubmission(submission: unknown) {
   await writeFile(submissionsFilePath, JSON.stringify(submissions, null, 2));
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  if (!isValidAdminSession(request.cookies.get(adminSessionCookie)?.value)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const submissions = await readSubmissions();
   return NextResponse.json({ submissions });
 }

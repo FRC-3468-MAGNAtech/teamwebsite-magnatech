@@ -1,8 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { readFile } from "fs/promises";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { ArrowLeft, ClipboardList, ExternalLink } from "lucide-react";
 import path from "path";
+import { adminSessionCookie, isValidAdminSession } from "@/lib/admin-auth";
 
 type SponsorSubmission = {
   submittedAt: string;
@@ -37,6 +40,11 @@ async function getSubmissions() {
 }
 
 export default async function SponsorResponsesPage() {
+  const cookieStore = await cookies();
+  if (!isValidAdminSession(cookieStore.get(adminSessionCookie)?.value)) {
+    redirect("/admin");
+  }
+
   const submissions = await getSubmissions();
 
   return (
