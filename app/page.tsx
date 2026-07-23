@@ -184,6 +184,10 @@ const resources = [
   },
 ];
 
+function opensInNewTab(href: string) {
+  return href.startsWith("http") || href.endsWith(".pdf");
+}
+
 function SectionHeader({
   title,
   children,
@@ -386,6 +390,8 @@ export default function MagnatechPublicSite() {
               </p>
               <a
                 href="/sponsorship-letter-2027.pdf"
+                target="_blank"
+                rel="noreferrer"
                 className="mt-5 inline-flex items-center gap-2 rounded bg-red-700 px-4 py-2 text-sm font-bold text-white hover:bg-red-800"
               >
                 Download packet <Download size={16} />
@@ -554,6 +560,8 @@ export default function MagnatechPublicSite() {
                 <a
                   key={resource.title}
                   href={resource.href}
+                  target={opensInNewTab(resource.href) ? "_blank" : undefined}
+                  rel={opensInNewTab(resource.href) ? "noreferrer" : undefined}
                   className="rounded border border-gray-200 bg-white p-6 shadow-sm transition hover:border-red-300 hover:shadow-md"
                 >
                   <ResourceIcon className="text-red-700" size={28} />
@@ -583,6 +591,8 @@ export default function MagnatechPublicSite() {
                   <a
                     key={link.label}
                     href={link.href}
+                    target={opensInNewTab(link.href) ? "_blank" : undefined}
+                    rel={opensInNewTab(link.href) ? "noreferrer" : undefined}
                     className="flex w-full items-center justify-between rounded border border-white/15 bg-white/10 px-5 py-4 text-left font-bold text-white hover:bg-white/15"
                   >
                     <span className="flex items-center gap-3">

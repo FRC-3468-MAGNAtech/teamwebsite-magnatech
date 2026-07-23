@@ -50,6 +50,8 @@ export default function ResourcesPage() {
             <a
               key={resource.title}
               href={resource.href}
+              target="_blank"
+              rel="noreferrer"
               className="rounded border border-gray-200 bg-white p-6 shadow-sm transition hover:border-red-300 hover:shadow-md"
             >
               {cardContent}

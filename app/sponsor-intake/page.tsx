@@ -264,6 +264,8 @@ export default function SponsorIntakePage() {
           </div>
           <a
             href="/sponsorship-letter-2027.pdf"
+            target="_blank"
+            rel="noreferrer"
             className="flex items-center justify-between rounded border border-red-200 bg-red-50 p-5 font-black text-red-800 hover:bg-red-100"
           >
             Download sponsor packet
