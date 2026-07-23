@@ -13,7 +13,8 @@ function isCalendarEvent(value: unknown): value is Omit<CalendarEvent, "id"> {
   }
 
   const event = value as Record<string, unknown>;
-  return ["title", "date", "location", "type"].every((field) => typeof event[field] === "string" && event[field].trim());
+  const requiredFieldsAreValid = ["title", "date", "location", "type"].every((field) => typeof event[field] === "string" && event[field].trim());
+  return requiredFieldsAreValid && (event.calendarDate === undefined || typeof event.calendarDate === "string");
 }
 
 export async function GET() {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Amphora,
   ArrowRight,
@@ -135,6 +135,8 @@ const eventList = [
   },
 ];
 
+type PublicCalendarEvent = (typeof eventList)[number] & { id?: string; calendarDate?: string };
+
 const impactStats = [
   ["TBD", "students mentored"],
   ["31", "schools impacted"],
@@ -252,7 +254,8 @@ function Nav() {
 }
 
 export default function MagnatechPublicSite() {
-  const [calendarEvents, setCalendarEvents] = useState(eventList);
+  const [calendarEvents, setCalendarEvents] = useState<PublicCalendarEvent[]>(eventList);
+  const [selectedCalendarDate, setSelectedCalendarDate] = useState("");
 
   useEffect(() => {
     fetch("/api/calendar")
@@ -260,11 +263,16 @@ export default function MagnatechPublicSite() {
         if (!response.ok) {
           throw new Error("Unable to load calendar events.");
         }
-        return response.json() as Promise<{ events: typeof eventList }>;
+        return response.json() as Promise<{ events: PublicCalendarEvent[] }>;
       })
       .then(({ events }) => setCalendarEvents(events))
       .catch(() => undefined);
   }, []);
+
+  const visibleCalendarEvents = useMemo(
+    () => selectedCalendarDate ? calendarEvents.filter((event) => event.calendarDate === selectedCalendarDate) : calendarEvents,
+    [calendarEvents, selectedCalendarDate],
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-950">
@@ -489,25 +497,15 @@ export default function MagnatechPublicSite() {
             <div className="rounded border border-gray-200 bg-white p-5 shadow-sm">
               <p className="text-sm font-bold uppercase tracking-wide text-red-700">Upcoming</p>
               <h3 className="mt-2 text-2xl font-black">Team Calendar</h3>
-              <p className="mt-3 text-sm leading-6 text-gray-600">
-                Dates can be updated as event details are confirmed.
-              </p>
-              <div className="mt-5 grid grid-cols-7 gap-1 text-center text-xs font-bold text-gray-500">
-                {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
-                  <span key={`${day}-${index}`}>{day}</span>
-                ))}
-                {Array.from({ length: 35 }).map((_, index) => (
-                  <span
-                    key={index}
-                    className={`rounded py-2 ${[6, 14, 22, 28].includes(index) ? "bg-red-700 text-white" : "bg-gray-50 text-gray-600"}`}
-                  >
-                    {index + 1}
-                  </span>
-                ))}
-              </div>
+              <p className="mt-3 text-sm leading-6 text-gray-600">Choose a date to see scheduled events, or clear it to view everything.</p>
+              <label className="mt-5 block text-sm font-bold text-gray-800">
+                Select a date
+                <input value={selectedCalendarDate} onChange={(event) => setSelectedCalendarDate(event.target.value)} type="date" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
+              </label>
+              {selectedCalendarDate && <button type="button" onClick={() => setSelectedCalendarDate("")} className="mt-3 text-sm font-bold text-red-700 hover:text-red-800">Show all events</button>}
             </div>
             <div className="overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
-              {calendarEvents.map((event) => (
+              {visibleCalendarEvents.map((event) => (
                 <div key={event.title} className="grid gap-3 border-b border-gray-200 p-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:items-center">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wide text-red-700">{event.type}</p>
@@ -521,6 +519,7 @@ export default function MagnatechPublicSite() {
                   </p>
                 </div>
               ))}
+              {visibleCalendarEvents.length === 0 && <p className="p-6 text-sm font-semibold text-gray-600">No events are scheduled for this date.</p>}
             </div>
           </div>
         </div>

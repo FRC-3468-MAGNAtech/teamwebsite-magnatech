@@ -6,6 +6,7 @@ export type CalendarEvent = {
   id: string;
   title: string;
   date: string;
+  calendarDate?: string;
   location: string;
   type: string;
 };

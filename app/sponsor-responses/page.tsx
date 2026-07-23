@@ -19,8 +19,8 @@ export default async function SponsorResponsesPage() {
       <section className="relative overflow-hidden border-b border-gray-200 bg-white">
         <Image src="/greek-assets/cropped/laurel-branch.png" alt="" aria-hidden="true" width={1102} height={618} className="pointer-events-none absolute right-12 top-2 hidden w-44 opacity-20 lg:block" />
         <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-red-700 hover:text-red-800">
-            <ArrowLeft size={16} /> Back to site
+          <Link href="/admin" className="inline-flex items-center gap-2 text-sm font-bold text-red-700 hover:text-red-800">
+            <ArrowLeft size={16} /> Back to admin dashboard
           </Link>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
