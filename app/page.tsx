@@ -194,11 +194,7 @@ function SectionHeader({
   return (
     <div className="mx-auto mb-10 max-w-3xl text-center">
       <div className="mb-4 flex items-center justify-center gap-3 text-[#c59a3d]" aria-hidden="true">
-        <span className="h-0.5 w-28 bg-[#c59a3d]/75 sm:w-56" />
-        <Image src="/greek-assets/15.png" alt="" width={72} height={88} className="h-12 w-10 -rotate-90 scale-150 object-contain sm:h-16 sm:w-12" />
-        <Image src="/greek-assets/12.png" alt="" width={72} height={72} className="h-11 w-11 scale-150 object-contain sm:h-14 sm:w-14" />
-        <Image src="/greek-assets/15.png" alt="" width={72} height={88} className="h-12 w-10 rotate-90 scale-150 object-contain sm:h-16 sm:w-12" />
-        <span className="h-0.5 w-28 bg-[#c59a3d]/75 sm:w-56" />
+        <Image src="/greek-assets/14.png" alt="" width={320} height={190} className="h-20 w-64 scale-150 object-contain sm:h-24 sm:w-80" />
       </div>
       <h2 className="display-font angled-rule inline-block pb-4 text-3xl font-bold text-gray-950 sm:text-4xl">{title}</h2>
       {children && <p className="mt-4 text-base leading-7 text-gray-600">{children}</p>}
@@ -257,7 +253,6 @@ export default function MagnatechPublicSite() {
 
       <section className="relative overflow-hidden bg-gray-950 text-white">
         <Image src="/greek-assets/12.png" alt="" aria-hidden="true" width={220} height={220} className="pointer-events-none absolute -right-5 top-8 z-10 w-36 opacity-80 mix-blend-screen sm:w-52" />
-        <Image src="/greek-assets/14.png" alt="" aria-hidden="true" width={260} height={190} className="pointer-events-none absolute -bottom-8 right-[28%] z-10 w-40 -rotate-6 opacity-70 mix-blend-screen sm:w-56" />
         <div className="absolute inset-0 opacity-35">
           <div className="h-full w-full bg-[linear-gradient(135deg,rgba(196,34,33,0.92),rgba(17,24,39,0.82)_42%,rgba(255,255,255,0.12)),repeating-linear-gradient(90deg,rgba(255,255,255,0.14)_0_1px,transparent_1px_88px),repeating-linear-gradient(0deg,rgba(255,255,255,0.1)_0_1px,transparent_1px_88px)]" />
         </div>
@@ -338,9 +333,9 @@ export default function MagnatechPublicSite() {
             {sponsorTiers.map((tier) => (
               <article
                 key={tier.name}
-                className={`relative overflow-hidden rounded border border-gray-200 bg-white p-6 shadow-sm before:absolute before:right-3 before:top-3 before:h-20 before:w-20 before:rounded-full before:border before:border-[#c59a3d]/20 ${tier.name === "Olympian Partner" ? "lg:col-start-2" : ""}`}
+                className={`relative overflow-hidden rounded border border-gray-200 bg-white p-6 shadow-sm ${tier.name === "Olympian Partner" ? "lg:col-start-2" : ""}`}
               >
-                <Image src="/greek-assets/12.png" alt="" aria-hidden="true" width={44} height={44} className="pointer-events-none absolute right-5 top-5 w-9 opacity-20" />
+                <Image src="/greek-assets/12.png" alt="" aria-hidden="true" width={88} height={88} className="pointer-events-none absolute right-3 top-3 w-16 opacity-20" />
                 <h3 className="flex items-center gap-2 text-xl font-black text-gray-950">
                   <tier.icon className="mt-0.5 shrink-0 text-red-700" size={22} />
                   {tier.name}
