@@ -1,43 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { readFile } from "fs/promises";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ArrowLeft, ClipboardList, ExternalLink } from "lucide-react";
-import path from "path";
 import { adminSessionCookie, isValidAdminSession } from "@/lib/admin-auth";
-
-type SponsorSubmission = {
-  submittedAt: string;
-  companyName: string;
-  contactName: string;
-  email: string;
-  phone: string;
-  mailingAddress: string;
-  socialMedia: {
-    instagram: string;
-    facebook: string;
-    linkedin: string;
-  };
-  sponsorshipTier: string;
-  contributionTypes: string[];
-  contributionNotes: string;
-  logoFile: {
-    name: string;
-    type: string;
-    size: number;
-  } | null;
-};
-
-async function getSubmissions() {
-  try {
-    const filePath = path.join(process.cwd(), "data", "sponsor-intake-submissions.json");
-    const file = await readFile(filePath, "utf8");
-    return JSON.parse(file) as SponsorSubmission[];
-  } catch {
-    return [];
-  }
-}
+import { getSponsorSubmissions } from "@/lib/sponsor-submissions";
 
 export default async function SponsorResponsesPage() {
   const cookieStore = await cookies();
@@ -45,7 +12,7 @@ export default async function SponsorResponsesPage() {
     redirect("/admin");
   }
 
-  const submissions = await getSubmissions();
+  const submissions = await getSponsorSubmissions();
 
   return (
     <main className="site-grid min-h-screen bg-gray-50 text-gray-950">
@@ -60,7 +27,7 @@ export default async function SponsorResponsesPage() {
               <p className="mb-3 text-sm font-bold uppercase tracking-wide text-red-700">Sponsor Responses</p>
               <h1 className="display-font text-4xl font-black">Sponsorship form submissions</h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-600">
-                This local development page reads submissions saved by the intake form. A production version should require login and connect to Google Sheets, Airtable, Firebase, or another secure database.
+                Review sponsorship intake submissions collected through the website.
               </p>
             </div>
             <a
@@ -78,7 +45,7 @@ export default async function SponsorResponsesPage() {
           <div className="rounded border border-gray-200 bg-white p-8 text-center shadow-sm">
             <ClipboardList className="mx-auto text-red-700" size={36} />
             <h2 className="mt-4 text-2xl font-black">No submissions yet</h2>
-            <p className="mt-2 text-sm text-gray-600">Submitted sponsor forms will appear here while you are running the site locally.</p>
+            <p className="mt-2 text-sm text-gray-600">Submitted sponsor forms will appear here as businesses complete the intake form.</p>
           </div>
         ) : (
           <div className="space-y-4">

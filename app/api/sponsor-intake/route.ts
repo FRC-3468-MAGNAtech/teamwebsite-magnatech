@@ -1,32 +1,15 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
+import { randomUUID } from "crypto";
 import { adminSessionCookie, isValidAdminSession } from "@/lib/admin-auth";
+import { getSponsorSubmissions, saveSponsorSubmission } from "@/lib/sponsor-submissions";
 
 const allowedLogoTypes = new Set(["image/svg+xml", "image/png", "application/pdf"]);
 const maxLogoSizeBytes = 10 * 1024 * 1024;
-const submissionsFilePath = path.join(process.cwd(), "data", "sponsor-intake-submissions.json");
 
 function getText(formData: FormData, key: string) {
   const value = formData.get(key);
   return typeof value === "string" ? value.trim() : "";
-}
-
-async function readSubmissions() {
-  try {
-    const file = await readFile(submissionsFilePath, "utf8");
-    return JSON.parse(file) as unknown[];
-  } catch {
-    return [];
-  }
-}
-
-async function saveSubmission(submission: unknown) {
-  const submissions = await readSubmissions();
-  submissions.unshift(submission);
-  await mkdir(path.dirname(submissionsFilePath), { recursive: true });
-  await writeFile(submissionsFilePath, JSON.stringify(submissions, null, 2));
 }
 
 export async function GET(request: NextRequest) {
@@ -34,7 +17,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const submissions = await readSubmissions();
+  const submissions = await getSponsorSubmissions();
   return NextResponse.json({ submissions });
 }
 
@@ -60,6 +43,7 @@ export async function POST(request: Request) {
   }
 
   const submission = {
+    id: randomUUID(),
     submittedAt: new Date().toISOString(),
     companyName: getText(formData, "companyName"),
     contactName: getText(formData, "contactName"),
@@ -84,13 +68,7 @@ export async function POST(request: Request) {
         : null,
   };
 
-  console.info("Sponsor intake submission received", submission);
-  await saveSubmission(submission);
-
-  // Production integrations can be added here:
-  // - Send a confirmation email with tax-exempt/non-profit ID and team contact info.
-  // - Append submission details to Google Sheets, Airtable, Firebase, or another database.
-  // Keep API keys and service credentials in server-only environment variables.
+  await saveSponsorSubmission(submission);
 
   return NextResponse.json({
     ok: true,
