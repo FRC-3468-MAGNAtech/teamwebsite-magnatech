@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   Amphora,
   ArrowRight,
   BadgeDollarSign,
   CalendarDays,
-  Cog,
   ChevronRight,
   Crown,
   Download,
@@ -18,7 +18,6 @@ import {
   HeartHandshake,
   Instagram,
   Landmark,
-  Leaf,
   MapPin,
   Music2,
   ScrollText,
@@ -196,9 +195,9 @@ function SectionHeader({
     <div className="mx-auto mb-10 max-w-3xl text-center">
       <div className="mb-4 flex items-center justify-center gap-3 text-[#c59a3d]" aria-hidden="true">
         <span className="h-px w-12 bg-[#c59a3d]/60" />
-        <Leaf size={18} strokeWidth={2.5} className="-rotate-45" />
-        <Cog size={18} strokeWidth={2.5} />
-        <Leaf size={18} strokeWidth={2.5} className="rotate-45" />
+        <Image src="/greek-assets/15.png" alt="" width={34} height={44} className="h-7 w-6 -rotate-90 object-contain" />
+        <Image src="/greek-assets/12.png" alt="" width={34} height={34} className="h-6 w-6 object-contain" />
+        <Image src="/greek-assets/15.png" alt="" width={34} height={44} className="h-7 w-6 rotate-90 object-contain" />
         <span className="h-px w-12 bg-[#c59a3d]/60" />
       </div>
       <h2 className="display-font angled-rule inline-block pb-4 text-3xl font-bold text-gray-950 sm:text-4xl">{title}</h2>
@@ -257,8 +256,8 @@ export default function MagnatechPublicSite() {
       <Nav />
 
       <section className="relative overflow-hidden bg-gray-950 text-white">
-        <Cog aria-hidden="true" className="pointer-events-none absolute -right-16 top-20 h-72 w-72 text-[#c59a3d]/15" strokeWidth={1} />
-        <Cog aria-hidden="true" className="pointer-events-none absolute -left-20 bottom-10 h-64 w-64 text-[#c59a3d]/10" strokeWidth={1} />
+        <Image src="/greek-assets/12.png" alt="" aria-hidden="true" width={220} height={220} className="pointer-events-none absolute -right-5 top-8 z-10 w-36 opacity-80 mix-blend-screen sm:w-52" />
+        <Image src="/greek-assets/14.png" alt="" aria-hidden="true" width={260} height={190} className="pointer-events-none absolute -bottom-8 right-[28%] z-10 w-40 -rotate-6 opacity-70 mix-blend-screen sm:w-56" />
         <div className="absolute inset-0 opacity-35">
           <div className="h-full w-full bg-[linear-gradient(135deg,rgba(196,34,33,0.92),rgba(17,24,39,0.82)_42%,rgba(255,255,255,0.12)),repeating-linear-gradient(90deg,rgba(255,255,255,0.14)_0_1px,transparent_1px_88px),repeating-linear-gradient(0deg,rgba(255,255,255,0.1)_0_1px,transparent_1px_88px)]" />
         </div>
@@ -268,9 +267,7 @@ export default function MagnatechPublicSite() {
               <Sparkles size={16} /> West Monroe&apos;s FRC robotics team
             </p>
             <div className="flex items-center gap-4">
-              <Leaf aria-hidden="true" className="hidden h-16 w-16 -rotate-45 text-[#d5ad55] sm:block" strokeWidth={1.5} />
               <h1 className="display-font text-5xl font-black leading-tight sm:text-6xl lg:text-7xl">MAGNAtech</h1>
-              <Leaf aria-hidden="true" className="hidden h-16 w-16 rotate-45 text-[#d5ad55] sm:block" strokeWidth={1.5} />
             </div>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-100 sm:text-xl">
               WM Rebel Robotics builds robots, outreach programs, media, strategy, and local STEM momentum through FIRST Robotics Competition.
@@ -292,7 +289,7 @@ export default function MagnatechPublicSite() {
           </div>
           <div className="relative rounded border border-[#c59a3d]/50 bg-white/10 p-5 shadow-2xl backdrop-blur">
             <div className="pointer-events-none absolute -right-3 -top-3 rounded-full border border-[#d5ad55]/60 bg-gray-950/80 p-2 text-[#d5ad55]" aria-hidden="true">
-              <Cog size={22} />
+              <Image src="/greek-assets/12.png" alt="" width={32} height={32} />
             </div>
             <div className="grid grid-cols-2 gap-3">
               {communityStats.map(([value, label]) => (
@@ -321,6 +318,9 @@ export default function MagnatechPublicSite() {
       </section>
 
       <section id="sponsors" className="site-grid bg-white py-20">
+        <div className="mx-auto mb-12 max-w-7xl overflow-hidden px-4 sm:px-6 lg:px-8" aria-hidden="true">
+          <Image src="/greek-assets/17.png" alt="" width={1368} height={105} className="h-5 w-full object-cover object-center opacity-70" />
+        </div>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader title="Sponsor Us">
             MAGNAtech sponsorship supports robot parts, travel, outreach events, training, and programs that bring STEM opportunities to our community.
@@ -340,7 +340,7 @@ export default function MagnatechPublicSite() {
                 key={tier.name}
                 className={`relative overflow-hidden rounded border border-gray-200 bg-white p-6 shadow-sm before:absolute before:right-3 before:top-3 before:h-20 before:w-20 before:rounded-full before:border before:border-[#c59a3d]/20 ${tier.name === "Olympian Partner" ? "lg:col-start-2" : ""}`}
               >
-                <Cog aria-hidden="true" className="pointer-events-none absolute right-6 top-6 text-[#c59a3d]/20" size={38} strokeWidth={1} />
+                <Image src="/greek-assets/12.png" alt="" aria-hidden="true" width={44} height={44} className="pointer-events-none absolute right-5 top-5 w-9 opacity-20" />
                 <h3 className="flex items-center gap-2 text-xl font-black text-gray-950">
                   <tier.icon className="mt-0.5 shrink-0 text-red-700" size={22} />
                   {tier.name}
@@ -401,6 +401,7 @@ export default function MagnatechPublicSite() {
       </section>
 
       <section id="subgroups" className="relative overflow-hidden py-20">
+        <Image src="/greek-assets/16.png" alt="" aria-hidden="true" width={220} height={300} className="pointer-events-none absolute -left-10 bottom-0 hidden w-32 opacity-10 lg:block" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[#c59a3d]/50" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader title="Subgroups">
@@ -415,7 +416,7 @@ export default function MagnatechPublicSite() {
                   href={`/subgroups/${subgroup.slug}`}
                   className="relative overflow-hidden rounded border border-gray-200 bg-white p-6 shadow-sm transition hover:border-[#c59a3d] hover:shadow-md"
                 >
-                  <Leaf aria-hidden="true" className="pointer-events-none absolute right-5 top-5 rotate-45 text-[#c59a3d]/25" size={42} />
+                  <Image src="/greek-assets/15.png" alt="" aria-hidden="true" width={44} height={60} className="pointer-events-none absolute right-5 top-5 w-9 rotate-45 opacity-25" />
                   <SubgroupIcon className="text-red-700" size={28} />
                   <h3 className="mt-4 text-xl font-black text-gray-950">{subgroup.name}</h3>
                   <p className="mt-3 text-sm leading-6 text-gray-600">{subgroup.summary}</p>
@@ -429,7 +430,8 @@ export default function MagnatechPublicSite() {
         </div>
       </section>
 
-      <section id="outreach" className="site-grid bg-white py-20">
+      <section id="outreach" className="site-grid relative overflow-hidden bg-white py-20">
+        <Image src="/greek-assets/15.png" alt="" aria-hidden="true" width={230} height={300} className="pointer-events-none absolute right-0 hidden w-28 opacity-10 lg:block" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader title="Outreach">
             Outreach, camps, and events connect MAGNAtech with schools and STEM programs across the community.
@@ -437,7 +439,7 @@ export default function MagnatechPublicSite() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {impactStats.map(([value, label]) => (
               <div key={label} className="relative overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 text-center">
-                <Cog aria-hidden="true" className="pointer-events-none absolute -right-2 -top-2 text-[#c59a3d]/20" size={42} />
+                <Image src="/greek-assets/12.png" alt="" aria-hidden="true" width={44} height={44} className="pointer-events-none absolute -right-2 -top-2 w-10 opacity-20" />
                 <p className="text-4xl font-black text-red-700">{value}</p>
                 <p className="mt-2 text-sm font-bold uppercase tracking-wide text-gray-700">{label}</p>
               </div>
@@ -519,7 +521,7 @@ export default function MagnatechPublicSite() {
                   href={`/archive/${season.slug}`}
                   className="relative min-w-[78%] snap-center overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 transition hover:border-[#c59a3d] hover:bg-white hover:shadow-sm sm:min-w-[44%] lg:min-w-[31%]"
                 >
-                  <Leaf aria-hidden="true" className="pointer-events-none absolute right-5 top-5 rotate-45 text-[#c59a3d]/25" size={44} />
+                  <Image src="/greek-assets/14.png" alt="" aria-hidden="true" width={52} height={40} className="pointer-events-none absolute right-5 top-5 w-11 rotate-6 opacity-25" />
                   <div className="flex aspect-video items-end rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
                     <p className="text-sm font-bold text-gray-600">Robot pic</p>
                   </div>
