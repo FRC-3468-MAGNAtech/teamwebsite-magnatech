@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
+import { getFirebaseFirestore } from "@/lib/firebase-admin";
 
 export type CalendarEvent = {
   id: string;
@@ -10,6 +11,7 @@ export type CalendarEvent = {
 };
 
 const calendarFilePath = path.join(process.cwd(), "data", "calendar-events.json");
+const firestoreCalendarDocument = "site-content/calendar";
 
 export const defaultCalendarEvents: CalendarEvent[] = [
   { id: "fall-info-meeting", title: "Fall Info Meeting", date: "September TBD", location: "West Monroe High School", type: "Team" },
@@ -19,6 +21,13 @@ export const defaultCalendarEvents: CalendarEvent[] = [
 ];
 
 export async function getCalendarEvents() {
+  const firestore = getFirebaseFirestore();
+  if (firestore) {
+    const document = await firestore.doc(firestoreCalendarDocument).get();
+    const events = document.data()?.events;
+    return Array.isArray(events) ? (events as CalendarEvent[]) : defaultCalendarEvents;
+  }
+
   try {
     return JSON.parse(await readFile(calendarFilePath, "utf8")) as CalendarEvent[];
   } catch {
@@ -27,6 +36,12 @@ export async function getCalendarEvents() {
 }
 
 export async function saveCalendarEvents(events: CalendarEvent[]) {
+  const firestore = getFirebaseFirestore();
+  if (firestore) {
+    await firestore.doc(firestoreCalendarDocument).set({ events, updatedAt: new Date().toISOString() });
+    return;
+  }
+
   await mkdir(path.dirname(calendarFilePath), { recursive: true });
   await writeFile(calendarFilePath, JSON.stringify(events, null, 2));
 }
