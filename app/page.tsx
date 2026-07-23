@@ -194,11 +194,11 @@ function SectionHeader({
   return (
     <div className="mx-auto mb-10 max-w-3xl text-center">
       <div className="mb-4 flex items-center justify-center gap-3 text-[#c59a3d]" aria-hidden="true">
-        <span className="h-px w-12 bg-[#c59a3d]/60" />
-        <Image src="/greek-assets/15.png" alt="" width={34} height={44} className="h-7 w-6 -rotate-90 object-contain" />
-        <Image src="/greek-assets/12.png" alt="" width={34} height={34} className="h-6 w-6 object-contain" />
-        <Image src="/greek-assets/15.png" alt="" width={34} height={44} className="h-7 w-6 rotate-90 object-contain" />
-        <span className="h-px w-12 bg-[#c59a3d]/60" />
+        <span className="h-0.5 w-20 bg-[#c59a3d]/70 sm:w-32" />
+        <Image src="/greek-assets/15.png" alt="" width={52} height={68} className="h-10 w-8 -rotate-90 object-contain sm:h-12 sm:w-10" />
+        <Image src="/greek-assets/12.png" alt="" width={52} height={52} className="h-9 w-9 object-contain sm:h-11 sm:w-11" />
+        <Image src="/greek-assets/15.png" alt="" width={52} height={68} className="h-10 w-8 rotate-90 object-contain sm:h-12 sm:w-10" />
+        <span className="h-0.5 w-20 bg-[#c59a3d]/70 sm:w-32" />
       </div>
       <h2 className="display-font angled-rule inline-block pb-4 text-3xl font-bold text-gray-950 sm:text-4xl">{title}</h2>
       {children && <p className="mt-4 text-base leading-7 text-gray-600">{children}</p>}
