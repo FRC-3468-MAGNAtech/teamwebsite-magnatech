@@ -20,7 +20,7 @@ export default async function SeasonArchivePage({
     notFound();
   }
 
-  const RobotSymbol = season.robotSymbol;
+  const robotSymbol = season.robotSymbol;
 
   return (
     <main className="site-grid min-h-screen bg-gray-50 text-gray-950">
@@ -34,9 +34,9 @@ export default async function SeasonArchivePage({
           <p className="mt-8 text-sm font-bold uppercase tracking-wide text-red-700">{season.year}</p>
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
             <h1 className="display-font text-4xl font-black sm:text-5xl">{season.game}</h1>
-            {RobotSymbol && (
+            {robotSymbol && (
               <span title={season.robotName} className="rounded border border-[#c59a3d]/50 bg-[#fff8e7] p-3 text-[#8a641d]">
-                <RobotSymbol aria-label={`${season.robotName} symbol`} size={24} />
+                <Image src={robotSymbol} alt={`${season.robotName} symbol`} width={320} height={320} className="robot-symbol h-6 w-6 object-contain" />
               </span>
             )}
           </div>

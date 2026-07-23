@@ -1,10 +1,8 @@
-import { Bot, GitFork, Hourglass, Shield, Waves, type LucideIcon } from "lucide-react";
-
 export type Season = {
   year: string;
   game: string;
   robotName?: string;
-  robotSymbol?: LucideIcon;
+  robotSymbol?: string;
   slug: string;
   summary: string;
   events: string[];
@@ -15,6 +13,8 @@ export const seasons: Season[] = [
   {
     year: "2027",
     game: "BIOCORE",
+    robotName: "BIOCORE",
+    robotSymbol: "/robot-symbols/cropped/biocore.png",
     slug: "2027",
     summary: "The upcoming season begins with training, sponsor growth, and a new challenge reveal.",
     events: ["Kickoff", "Build season", "Competition season"],
@@ -24,7 +24,7 @@ export const seasons: Season[] = [
     year: "2026",
     game: "REBUILT",
     robotName: "KRONOS",
-    robotSymbol: Hourglass,
+    robotSymbol: "/robot-symbols/cropped/kronos.png",
     slug: "2026",
     summary: "REBUILT season archive for robot photos, technical details, event results, and team highlights.",
     events: ["Kickoff", "Robot reveal", "Regional events"],
@@ -34,7 +34,7 @@ export const seasons: Season[] = [
     year: "2025",
     game: "REEFSCAPE",
     robotName: "POSEIDON",
-    robotSymbol: Waves,
+    robotSymbol: "/robot-symbols/cropped/poseidon.png",
     slug: "2025",
     summary: "REEFSCAPE captures the lessons, outreach, awards, and robot story from a full competition season.",
     events: ["Kickoff", "Build season", "Competition events"],
@@ -44,7 +44,7 @@ export const seasons: Season[] = [
     year: "2024",
     game: "CRESCENDO",
     robotName: "TALOS",
-    robotSymbol: Shield,
+    robotSymbol: "/robot-symbols/cropped/talos.png",
     slug: "2024",
     summary: "CRESCENDO season archive for robot media, events, outreach, and team milestones.",
     events: ["Kickoff", "Build season", "Competition events"],
@@ -54,7 +54,7 @@ export const seasons: Season[] = [
     year: "2023",
     game: "CHARGED UP",
     robotName: "HYDRA",
-    robotSymbol: GitFork,
+    robotSymbol: "/robot-symbols/cropped/hydra.png",
     slug: "2023",
     summary: "CHARGED UP season archive for robot media, events, outreach, and team milestones.",
     events: ["Kickoff", "Build season", "Competition events"],
@@ -64,7 +64,7 @@ export const seasons: Season[] = [
     year: "2022",
     game: "RAPID REACT",
     robotName: "TIM",
-    robotSymbol: Bot,
+    robotSymbol: "/robot-symbols/cropped/tim.png",
     slug: "2022",
     summary: "RAPID REACT season archive for robot media, events, outreach, and team milestones.",
     events: ["Kickoff", "Build season", "Competition events"],

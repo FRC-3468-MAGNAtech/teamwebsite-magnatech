@@ -518,7 +518,7 @@ export default function MagnatechPublicSite() {
             <div className="flex snap-x gap-4">
               {seasons.map((season) => (
                 (() => {
-                  const RobotSymbol = season.robotSymbol;
+                  const robotSymbol = season.robotSymbol;
                   return (
                     <a
                       key={season.year}
@@ -531,9 +531,9 @@ export default function MagnatechPublicSite() {
                       </div>
                       <div className="mt-5 flex items-center justify-between gap-3">
                         <p className="text-sm font-bold uppercase tracking-wide text-red-700">{season.year}</p>
-                        {RobotSymbol && (
+                        {robotSymbol && (
                           <span title={season.robotName} className="rounded border border-[#c59a3d]/50 bg-[#fff8e7] p-2 text-[#8a641d]">
-                            <RobotSymbol aria-label={`${season.robotName} symbol`} size={18} />
+                            <Image src={robotSymbol} alt={`${season.robotName} symbol`} width={320} height={320} className="robot-symbol h-[18px] w-[18px] object-contain" />
                           </span>
                         )}
                       </div>

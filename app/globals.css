@@ -78,3 +78,7 @@ h6 {
   transform: skewX(-35deg);
   transform-origin: left;
 }
+
+.robot-symbol {
+  filter: brightness(0) saturate(100%) invert(44%) sepia(27%) saturate(1177%) hue-rotate(2deg) brightness(92%) contrast(89%);
+}
