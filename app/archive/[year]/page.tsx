@@ -20,6 +20,8 @@ export default async function SeasonArchivePage({
     notFound();
   }
 
+  const RobotSymbol = season.robotSymbol;
+
   return (
     <main className="site-grid min-h-screen bg-gray-50 text-gray-950">
       <section className="relative overflow-hidden border-b border-gray-200 bg-white">
@@ -32,7 +34,11 @@ export default async function SeasonArchivePage({
           <p className="mt-8 text-sm font-bold uppercase tracking-wide text-red-700">{season.year}</p>
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
             <h1 className="display-font text-4xl font-black sm:text-5xl">{season.game}</h1>
-            {season.robotName && <span className="technical-label rounded border border-[#c59a3d]/50 bg-[#fff8e7] px-3 py-2 text-sm font-bold text-[#8a641d]">{season.robotName}</span>}
+            {RobotSymbol && (
+              <span title={season.robotName} className="rounded border border-[#c59a3d]/50 bg-[#fff8e7] p-3 text-[#8a641d]">
+                <RobotSymbol aria-label={`${season.robotName} symbol`} size={24} />
+              </span>
+            )}
           </div>
           <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600">{season.summary}</p>
         </div>

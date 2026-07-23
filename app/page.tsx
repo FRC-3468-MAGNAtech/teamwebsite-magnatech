@@ -517,22 +517,31 @@ export default function MagnatechPublicSite() {
           <div className="overflow-x-auto pb-2">
             <div className="flex snap-x gap-4">
               {seasons.map((season) => (
-                <a
-                  key={season.year}
-                  href={`/archive/${season.slug}`}
-                  className="relative min-w-[78%] snap-center overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 transition hover:border-[#c59a3d] hover:bg-white hover:shadow-sm sm:min-w-[44%] lg:min-w-[31%]"
-                >
-                  <Image src="/greek-assets/cropped/laurel-branch.png" alt="" aria-hidden="true" width={1102} height={618} className="pointer-events-none absolute right-5 top-5 w-11 rotate-6 opacity-25" />
-                  <div className="flex aspect-video items-end rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
-                    <p className="text-sm font-bold text-gray-600">Robot pic</p>
-                  </div>
-                  <p className="mt-5 text-sm font-bold uppercase tracking-wide text-red-700">{season.year}</p>
-                  <h3 className="mt-2 text-2xl font-black">{season.game}</h3>
-                  {season.robotName && (
-                    <p className="technical-label mt-2 text-xs font-bold text-[#a3771e]">Robot: {season.robotName}</p>
-                  )}
-                  <p className="mt-3 text-sm leading-6 text-gray-600">{season.summary}</p>
-                </a>
+                (() => {
+                  const RobotSymbol = season.robotSymbol;
+                  return (
+                    <a
+                      key={season.year}
+                      href={`/archive/${season.slug}`}
+                      className="relative min-w-[78%] snap-center overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 transition hover:border-[#c59a3d] hover:bg-white hover:shadow-sm sm:min-w-[44%] lg:min-w-[31%]"
+                    >
+                      <Image src="/greek-assets/cropped/laurel-branch.png" alt="" aria-hidden="true" width={1102} height={618} className="pointer-events-none absolute right-5 top-5 w-11 rotate-6 opacity-25" />
+                      <div className="flex aspect-video items-end rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
+                        <p className="text-sm font-bold text-gray-600">Robot pic</p>
+                      </div>
+                      <div className="mt-5 flex items-center justify-between gap-3">
+                        <p className="text-sm font-bold uppercase tracking-wide text-red-700">{season.year}</p>
+                        {RobotSymbol && (
+                          <span title={season.robotName} className="rounded border border-[#c59a3d]/50 bg-[#fff8e7] p-2 text-[#8a641d]">
+                            <RobotSymbol aria-label={`${season.robotName} symbol`} size={18} />
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="mt-2 text-2xl font-black">{season.game}</h3>
+                      <p className="mt-3 text-sm leading-6 text-gray-600">{season.summary}</p>
+                    </a>
+                  );
+                })()
               ))}
             </div>
           </div>
