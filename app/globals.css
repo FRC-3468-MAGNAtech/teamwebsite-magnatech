@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "DALEK";
+  src: url("/fonts/Dalek.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --primary-color: #c42221;
   --primary-rgb: 196, 34, 33;
