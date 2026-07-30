@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { getFirebaseFirestore } from "@/lib/firebase-admin";
 
-export type SponsorStatus = "Completed" | "Discussing" | "Rejected";
+export type SponsorStatus = "New" | "Completed" | "Discussing" | "Rejected";
 
 export type SponsorSubmission = {
   id: string;

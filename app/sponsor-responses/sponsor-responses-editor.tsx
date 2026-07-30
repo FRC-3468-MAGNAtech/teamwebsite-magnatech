@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ClipboardList, ExternalLink, Trash2 } from "lucide-react";
 
-type SponsorStatus = "Completed" | "Discussing" | "Rejected";
+type SponsorStatus = "New" | "Completed" | "Discussing" | "Rejected";
 
 type SponsorSubmission = {
   id: string;
@@ -22,16 +22,17 @@ type SponsorSubmission = {
   logoFile: { name: string; type: string; size: number } | null;
 };
 
-const statusFilters: Array<SponsorStatus | "All"> = ["All", "Discussing", "Completed", "Rejected"];
+const statusFilters: Array<SponsorStatus | "All"> = ["All", "New", "Discussing", "Completed", "Rejected"];
 
 const statusStyles: Record<SponsorStatus, string> = {
+  New: "border-blue-200 bg-blue-50 text-blue-900",
   Discussing: "border-[#c59a3d]/40 bg-[#fff8e7] text-[#8a641d]",
   Completed: "border-green-200 bg-green-50 text-green-900",
   Rejected: "border-red-200 bg-red-50 text-red-900",
 };
 
 function withDefaultStatus(submissions: SponsorSubmission[]) {
-  return submissions.map((submission) => ({ ...submission, status: submission.status || "Discussing" }));
+  return submissions.map((submission) => ({ ...submission, status: submission.status || "New" }));
 }
 
 export default function SponsorResponsesEditor({ initialSubmissions }: { initialSubmissions: SponsorSubmission[] }) {
@@ -145,6 +146,7 @@ export default function SponsorResponsesEditor({ initialSubmissions }: { initial
                         onChange={(event) => updateStatus(submission.id, event.target.value as SponsorStatus)}
                         className="rounded border border-gray-300 bg-white px-3 py-2 text-sm font-bold outline-red-300"
                       >
+                        <option value="New">New</option>
                         <option value="Discussing">Discussing</option>
                         <option value="Completed">Completed</option>
                         <option value="Rejected">Rejected</option>

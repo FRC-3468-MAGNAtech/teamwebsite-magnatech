@@ -12,7 +12,7 @@ import {
 
 const allowedLogoTypes = new Set(["image/svg+xml", "image/png", "application/pdf"]);
 const maxLogoSizeBytes = 10 * 1024 * 1024;
-const sponsorStatuses = new Set<SponsorStatus>(["Completed", "Discussing", "Rejected"]);
+const sponsorStatuses = new Set<SponsorStatus>(["New", "Completed", "Discussing", "Rejected"]);
 
 function getText(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
   const submission = {
     id: randomUUID(),
     submittedAt: new Date().toISOString(),
-    status: "Discussing" as SponsorStatus,
+    status: "New" as SponsorStatus,
     companyName: getText(formData, "companyName"),
     contactName: getText(formData, "contactName"),
     email: getText(formData, "email"),
