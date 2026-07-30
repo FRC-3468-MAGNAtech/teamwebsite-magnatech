@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { randomUUID } from "crypto";
 import { adminSessionCookie, isValidAdminSession } from "@/lib/admin-auth";
+import { uploadSponsorLogo } from "@/lib/blob-storage";
 import {
   SponsorStatus,
   deleteSponsorSubmission,
@@ -43,6 +44,7 @@ export async function POST(request: Request) {
   }
 
   const logoFile = formData.get("logoFile");
+  let logoFileRecord = null;
   if (logoFile instanceof File && logoFile.size > 0) {
     if (!allowedLogoTypes.has(logoFile.type)) {
       return NextResponse.json({ error: "Logo must be an SVG, PNG, or PDF file." }, { status: 400 });
@@ -51,6 +53,9 @@ export async function POST(request: Request) {
     if (logoFile.size > maxLogoSizeBytes) {
       return NextResponse.json({ error: "Logo file must be 10 MB or smaller." }, { status: 400 });
     }
+
+    const uploaded = await uploadSponsorLogo(logoFile);
+    logoFileRecord = uploaded || { name: logoFile.name, type: logoFile.type, size: logoFile.size };
   }
 
   const submission = {
@@ -70,14 +75,7 @@ export async function POST(request: Request) {
     sponsorshipTier: getText(formData, "sponsorshipTier"),
     contributionTypes: formData.getAll("contributionTypes").filter((value): value is string => typeof value === "string"),
     contributionNotes: getText(formData, "contributionNotes"),
-    logoFile:
-      logoFile instanceof File && logoFile.size > 0
-        ? {
-            name: logoFile.name,
-            type: logoFile.type,
-            size: logoFile.size,
-          }
-        : null,
+    logoFile: logoFileRecord,
   };
 
   await saveSponsorSubmission(submission);

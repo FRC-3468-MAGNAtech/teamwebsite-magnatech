@@ -19,7 +19,7 @@ type SponsorSubmission = {
   sponsorshipTier: string;
   contributionTypes: string[];
   contributionNotes: string;
-  logoFile: { name: string; type: string; size: number } | null;
+  logoFile: { name: string; type: string; size: number; url?: string } | null;
 };
 
 const statusFilters: Array<SponsorStatus | "All"> = ["All", "New", "Discussing", "Completed", "Rejected"];
@@ -180,7 +180,34 @@ export default function SponsorResponsesEditor({ initialSubmissions }: { initial
                   </div>
                   <div>
                     <p className="font-black text-gray-900">Logo</p>
-                    <p className="mt-1 text-gray-600">{submission.logoFile ? `${submission.logoFile.name} (${Math.round(submission.logoFile.size / 1024)} KB)` : "No file uploaded"}</p>
+                    {submission.logoFile ? (
+                      submission.logoFile.url ? (
+                        <>
+                          {submission.logoFile.type.startsWith("image/") && (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={submission.logoFile.url}
+                              alt={`${submission.companyName} logo`}
+                              className="mt-2 h-16 w-auto rounded border border-gray-200 bg-white p-2"
+                            />
+                          )}
+                          <a
+                            href={submission.logoFile.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-2 inline-block font-bold text-red-700 underline hover:text-red-800"
+                          >
+                            {submission.logoFile.name} ({Math.round(submission.logoFile.size / 1024)} KB)
+                          </a>
+                        </>
+                      ) : (
+                        <p className="mt-1 text-gray-600">
+                          {submission.logoFile.name} ({Math.round(submission.logoFile.size / 1024)} KB) — file not stored
+                        </p>
+                      )
+                    ) : (
+                      <p className="mt-1 text-gray-600">No file uploaded</p>
+                    )}
                   </div>
                 </div>
               </article>

@@ -26,6 +26,7 @@ export type SponsorSubmission = {
     name: string;
     type: string;
     size: number;
+    url?: string;
   } | null;
 };
 
