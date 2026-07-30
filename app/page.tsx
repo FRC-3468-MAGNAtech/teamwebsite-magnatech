@@ -9,6 +9,7 @@ import {
   BadgeDollarSign,
   CalendarDays,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   Crown,
   Download,
@@ -138,6 +139,9 @@ const eventList = [
 
 type PublicCalendarEvent = (typeof eventList)[number] & { id?: string; calendarDate?: string };
 
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const weekdayLabels = ["S", "M", "T", "W", "T", "F", "S"];
+
 const impactStats = [
   ["TBD", "students mentored"],
   ["31", "schools impacted"],
@@ -257,6 +261,8 @@ function Nav() {
 export default function MagnatechPublicSite() {
   const [calendarEvents, setCalendarEvents] = useState<PublicCalendarEvent[]>(eventList);
   const [selectedCalendarDate, setSelectedCalendarDate] = useState("");
+  const [viewedMonth, setViewedMonth] = useState(5);
+  const [viewedYear, setViewedYear] = useState(2026);
   const [newsletterState, setNewsletterState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [newsletterError, setNewsletterError] = useState("");
 
@@ -297,6 +303,46 @@ export default function MagnatechPublicSite() {
     () => selectedCalendarDate ? calendarEvents.filter((event) => event.calendarDate === selectedCalendarDate) : calendarEvents,
     [calendarEvents, selectedCalendarDate],
   );
+
+  const eventDatesInView = useMemo(
+    () => new Set(calendarEvents.map((event) => event.calendarDate).filter((date): date is string => Boolean(date))),
+    [calendarEvents],
+  );
+
+  const calendarCells = useMemo(() => {
+    const firstWeekday = new Date(viewedYear, viewedMonth, 1).getDay();
+    const daysInMonth = new Date(viewedYear, viewedMonth + 1, 0).getDate();
+    const pad = (value: number) => String(value).padStart(2, "0");
+    const cells: Array<{ day: number; dateKey: string } | null> = [];
+    for (let i = 0; i < firstWeekday; i += 1) {
+      cells.push(null);
+    }
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      cells.push({ day, dateKey: `${viewedYear}-${pad(viewedMonth + 1)}-${pad(day)}` });
+    }
+    while (cells.length % 7 !== 0) {
+      cells.push(null);
+    }
+    return cells;
+  }, [viewedMonth, viewedYear]);
+
+  function goToPreviousMonth() {
+    if (viewedMonth === 0) {
+      setViewedMonth(11);
+      setViewedYear((year) => year - 1);
+    } else {
+      setViewedMonth((month) => month - 1);
+    }
+  }
+
+  function goToNextMonth() {
+    if (viewedMonth === 11) {
+      setViewedMonth(0);
+      setViewedYear((year) => year + 1);
+    } else {
+      setViewedMonth((month) => month + 1);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-950">
@@ -523,12 +569,48 @@ export default function MagnatechPublicSite() {
             <div className="rounded border border-gray-200 bg-white p-5 shadow-sm">
               <p className="text-sm font-bold uppercase tracking-wide text-red-700">Upcoming</p>
               <h3 className="mt-2 text-2xl font-black">Team Calendar</h3>
-              <p className="mt-3 text-sm leading-6 text-gray-600">Choose a date to see scheduled events, or clear it to view everything.</p>
-              <label className="mt-5 block text-sm font-bold text-gray-800">
-                Select a date
-                <input value={selectedCalendarDate} onChange={(event) => setSelectedCalendarDate(event.target.value)} type="date" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
-              </label>
-              {selectedCalendarDate && <button type="button" onClick={() => setSelectedCalendarDate("")} className="mt-3 text-sm font-bold text-red-700 hover:text-red-800">Show all events</button>}
+              <p className="mt-3 text-sm leading-6 text-gray-600">Dates can be updated as event details are confirmed.</p>
+
+              <div className="mt-5">
+                <div className="flex items-center justify-between">
+                  <button type="button" onClick={goToPreviousMonth} aria-label="Previous month" className="rounded border border-gray-300 p-2 hover:bg-gray-50">
+                    <ChevronLeft size={16} />
+                  </button>
+                  <p className="text-sm font-black text-gray-900">
+                    {monthNames[viewedMonth]} {viewedYear}
+                  </p>
+                  <button type="button" onClick={goToNextMonth} aria-label="Next month" className="rounded border border-gray-300 p-2 hover:bg-gray-50">
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+                <div className="mt-4 grid grid-cols-7 gap-1 text-center">
+                  {weekdayLabels.map((label, index) => (
+                    <p key={`${label}-${index}`} className="text-xs font-bold uppercase text-gray-400">
+                      {label}
+                    </p>
+                  ))}
+                  {calendarCells.map((cell, index) => {
+                    if (!cell) {
+                      return <div key={`blank-${index}`} />;
+                    }
+
+                    const hasEvent = eventDatesInView.has(cell.dateKey);
+                    const isSelected = selectedCalendarDate === cell.dateKey;
+                    return (
+                      <button
+                        type="button"
+                        key={cell.dateKey}
+                        onClick={() => setSelectedCalendarDate(isSelected ? "" : cell.dateKey)}
+                        className={`rounded py-2 text-sm font-bold transition ${hasEvent ? "bg-red-700 text-white hover:bg-red-800" : "text-gray-700 hover:bg-gray-100"} ${isSelected ? "ring-2 ring-red-700 ring-offset-1" : ""}`}
+                      >
+                        {cell.day}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {selectedCalendarDate && <button type="button" onClick={() => setSelectedCalendarDate("")} className="mt-4 text-sm font-bold text-red-700 hover:text-red-800">Show all events</button>}
             </div>
             <div className="overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
               {visibleCalendarEvents.map((event) => (
