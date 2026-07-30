@@ -31,7 +31,7 @@ import {
   Youtube,
 } from "lucide-react";
 import { programs, seasons } from "./archive/data";
-import { subgroups } from "./subgroups/data";
+import { getSubgroupParent, subgroups } from "./subgroups/data";
 
 const tierIconMap = {
   torch: Flame,
@@ -458,6 +458,7 @@ export default function MagnatechPublicSite() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {subgroups.map((subgroup) => {
               const SubgroupIcon = subgroup.icon;
+              const parent = getSubgroupParent(subgroup);
               return (
                 <a
                   key={subgroup.slug}
@@ -467,6 +468,7 @@ export default function MagnatechPublicSite() {
                   <Image src="/greek-assets/cropped/laurel-vine.png" alt="" aria-hidden="true" width={164} height={864} className="pointer-events-none absolute right-5 top-5 w-9 rotate-45 opacity-25" />
                   <SubgroupIcon className="text-red-700" size={28} />
                   <h3 className="mt-4 text-xl font-black text-gray-950">{subgroup.name}</h3>
+                  {parent && <p className="mt-1 text-xs font-bold uppercase tracking-wide text-gray-400">Part of {parent.name}</p>}
                   <p className="mt-3 text-sm leading-6 text-gray-600">{subgroup.summary}</p>
                   <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-red-700">
                     View subgroup <ArrowRight size={16} />
