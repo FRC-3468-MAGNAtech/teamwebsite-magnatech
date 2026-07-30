@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   Amphora,
   ArrowRight,
   BadgeDollarSign,
   CalendarDays,
+  CheckCircle2,
   ChevronRight,
   Crown,
   Download,
@@ -256,6 +257,29 @@ function Nav() {
 export default function MagnatechPublicSite() {
   const [calendarEvents, setCalendarEvents] = useState<PublicCalendarEvent[]>(eventList);
   const [selectedCalendarDate, setSelectedCalendarDate] = useState("");
+  const [newsletterState, setNewsletterState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [newsletterError, setNewsletterError] = useState("");
+
+  async function handleNewsletterSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setNewsletterState("submitting");
+    setNewsletterError("");
+
+    const form = event.currentTarget;
+    try {
+      const response = await fetch("/api/newsletter", { method: "POST", body: new FormData(form) });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(payload?.error || "Unable to sign up right now.");
+      }
+
+      form.reset();
+      setNewsletterState("success");
+    } catch (error) {
+      setNewsletterState("error");
+      setNewsletterError(error instanceof Error ? error.message : "Unable to sign up right now.");
+    }
+  }
 
   useEffect(() => {
     fetch("/api/calendar")
@@ -639,7 +663,7 @@ export default function MagnatechPublicSite() {
           <SectionHeader title="Newsletter" >
             Sign up for MAGNAtech updates, event notes, outreach highlights, and sponsor news.
           </SectionHeader>
-          <form action="/api/newsletter" method="post" className="rounded border border-gray-200 bg-gray-50 p-5 shadow-sm">
+          <form onSubmit={handleNewsletterSubmit} className="rounded border border-gray-200 bg-gray-50 p-5 shadow-sm">
             <div className="grid gap-4 sm:grid-cols-[0.8fr_1.2fr_auto]">
               <label className="block">
                 <span className="text-sm font-bold text-gray-800">Name</span>
@@ -649,10 +673,23 @@ export default function MagnatechPublicSite() {
                 <span className="text-sm font-bold text-gray-800">Email</span>
                 <input required name="email" type="email" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm" />
               </label>
-              <button type="submit" className="self-end rounded bg-red-700 px-5 py-3 text-sm font-black text-white hover:bg-red-800">
-                Sign Up
+              <button
+                type="submit"
+                disabled={newsletterState === "submitting"}
+                className="self-end rounded bg-red-700 px-5 py-3 text-sm font-black text-white hover:bg-red-800 disabled:cursor-not-allowed disabled:bg-gray-400"
+              >
+                {newsletterState === "submitting" ? "Signing up..." : "Sign Up"}
               </button>
             </div>
+            {newsletterState === "success" && (
+              <div className="mt-4 flex items-start gap-3 rounded border border-green-200 bg-green-50 p-4 text-sm text-green-900">
+                <CheckCircle2 className="mt-0.5 shrink-0" size={18} />
+                <p>You&apos;re subscribed! Watch your inbox for MAGNAtech updates.</p>
+              </div>
+            )}
+            {newsletterState === "error" && (
+              <div className="mt-4 rounded border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-900">{newsletterError}</div>
+            )}
           </form>
         </div>
       </section>

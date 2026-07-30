@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, FileText, LockKeyhole, LogOut } from "lucide-react";
+import { CalendarDays, FileText, LockKeyhole, LogOut, Mail } from "lucide-react";
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -75,9 +75,10 @@ export default function AdminPage() {
       </section>
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <p className="max-w-2xl text-base leading-7 text-gray-600">Choose an area to manage public events and private sponsor information.</p>
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
+        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           <Link href="/admin/calendar" className="group rounded border border-gray-200 bg-white p-7 shadow-sm transition hover:border-red-300 hover:shadow-md"><CalendarDays className="text-red-700" size={32} /><h2 className="mt-5 text-2xl font-black">Calendar</h2><p className="mt-2 text-sm leading-6 text-gray-600">Add, edit, and remove the events shown on the public calendar.</p><span className="mt-6 inline-flex text-sm font-black text-red-700">Manage calendar →</span></Link>
           <Link href="/sponsor-responses" className="group rounded border border-[#c59a3d]/40 bg-[#fff8e7] p-7 shadow-sm transition hover:border-[#c59a3d] hover:shadow-md"><FileText className="text-[#8a641d]" size={32} /><h2 className="mt-5 text-2xl font-black">Form Responses</h2><p className="mt-2 text-sm leading-6 text-gray-600">Review sponsorship intake submissions from local businesses.</p><span className="mt-6 inline-flex text-sm font-black text-[#8a641d]">View responses →</span></Link>
+          <Link href="/admin/newsletter" className="group rounded border border-blue-200 bg-blue-50 p-7 shadow-sm transition hover:border-blue-300 hover:shadow-md"><Mail className="text-blue-900" size={32} /><h2 className="mt-5 text-2xl font-black">Newsletter</h2><p className="mt-2 text-sm leading-6 text-gray-600">Manage subscribers and send updates to the MAGNAtech mailing list.</p><span className="mt-6 inline-flex text-sm font-black text-blue-900">Manage newsletter →</span></Link>
         </div>
       </section>
     </main>
