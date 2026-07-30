@@ -3,9 +3,12 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { getFirebaseFirestore } from "@/lib/firebase-admin";
 
+export type SponsorStatus = "Completed" | "Discussing" | "Rejected";
+
 export type SponsorSubmission = {
   id: string;
   submittedAt: string;
+  status: SponsorStatus;
   companyName: string;
   contactName: string;
   email: string;
@@ -60,4 +63,34 @@ export async function saveSponsorSubmission(submission: SponsorSubmission) {
   submissions.unshift(submission);
   await mkdir(path.dirname(submissionsFilePath), { recursive: true });
   await writeFile(submissionsFilePath, JSON.stringify(submissions, null, 2));
+}
+
+export async function updateSponsorSubmissionStatus(id: string, status: SponsorStatus) {
+  const firestore = getFirebaseFirestore();
+  if (firestore) {
+    await firestore.collection(submissionsCollection).doc(id).update({ status });
+    return;
+  }
+
+  const submissions = await getLocalSubmissions();
+  const submissionIndex = submissions.findIndex((submission) => submission.id === id);
+  if (submissionIndex === -1) {
+    return;
+  }
+
+  submissions[submissionIndex] = { ...submissions[submissionIndex], status };
+  await mkdir(path.dirname(submissionsFilePath), { recursive: true });
+  await writeFile(submissionsFilePath, JSON.stringify(submissions, null, 2));
+}
+
+export async function deleteSponsorSubmission(id: string) {
+  const firestore = getFirebaseFirestore();
+  if (firestore) {
+    await firestore.collection(submissionsCollection).doc(id).delete();
+    return;
+  }
+
+  const submissions = await getLocalSubmissions();
+  await mkdir(path.dirname(submissionsFilePath), { recursive: true });
+  await writeFile(submissionsFilePath, JSON.stringify(submissions.filter((submission) => submission.id !== id), null, 2));
 }
