@@ -155,11 +155,35 @@ const quickLinks = [
   { label: "Newsletter Sign-Up", href: "#newsletter" },
 ];
 
-const carouselPlaceholders = [
-  "Robot reveal",
-  "Summer STEM camp",
-  "Competition pit",
-  "Community demo",
+const homePhotos = [
+  {
+    label: "Imagery Award",
+    src: "/photos/home/imagery-award.png",
+    alt: "MAGNAtech team holding the Imagery Award",
+    width: 4284,
+    height: 5712,
+  },
+  {
+    label: "Match Queue",
+    src: "/photos/home/match-queue.png",
+    alt: "MAGNAtech students queueing for a match",
+    width: 3024,
+    height: 4032,
+  },
+  {
+    label: "Arkansas Team",
+    src: "/photos/home/arkansas-team.jpg",
+    alt: "MAGNAtech group photo at Arkansas Regional",
+    width: 2048,
+    height: 1536,
+  },
+  {
+    label: "Bayou Pit",
+    src: "/photos/home/bayou-pit.jpg",
+    alt: "MAGNAtech competition pit at Bayou Regional",
+    width: 1440,
+    height: 1080,
+  },
 ];
 
 const resources = [
@@ -381,14 +405,24 @@ export default function MagnatechPublicSite() {
             </div>
             <div className="mt-4 overflow-x-auto pb-1">
               <div className="flex snap-x gap-3">
-                {carouselPlaceholders.map((label, index) => (
+                {homePhotos.map((photo, index) => (
                   <div
-                    key={label}
-                    className="flex min-w-[78%] snap-center flex-col justify-end rounded border border-white/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.24),rgba(196,34,33,0.32)),repeating-linear-gradient(45deg,rgba(255,255,255,0.18)_0_1px,transparent_1px_16px)] p-4 sm:min-w-[58%]"
+                    key={photo.src}
+                    className="relative flex min-w-[78%] snap-center flex-col justify-end overflow-hidden rounded border border-white/15 bg-gray-900 p-4 sm:min-w-[58%]"
                     style={{ aspectRatio: "16 / 9" }}
                   >
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      width={photo.width}
+                      height={photo.height}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      priority={index === 0}
+                      sizes="(min-width: 640px) 29vw, 78vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-gray-950/15 to-transparent" />
                     <p className="text-xs font-bold uppercase tracking-wide text-red-100">Photo {index + 1}</p>
-                    <p className="mt-1 text-lg font-black text-white">{label}</p>
+                    <p className="relative mt-1 text-lg font-black text-white">{photo.label}</p>
                   </div>
                 ))}
               </div>
@@ -602,8 +636,23 @@ export default function MagnatechPublicSite() {
                       className="relative min-w-[78%] snap-center overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 transition hover:border-[#c59a3d] hover:bg-white hover:shadow-sm sm:min-w-[44%] lg:min-w-[31%]"
                     >
                       <Image src="/greek-assets/cropped/laurel-branch.png" alt="" aria-hidden="true" width={1102} height={618} className="pointer-events-none absolute right-5 top-5 w-11 rotate-6 opacity-25" />
-                      <div className="flex aspect-video items-end rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
-                        <p className="text-sm font-bold text-gray-600">Robot pic</p>
+                      <div className="relative flex aspect-video items-end overflow-hidden rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
+                        {season.robotPhoto ? (
+                          <>
+                            <Image
+                              src={season.robotPhoto.src}
+                              alt={season.robotPhoto.alt}
+                              width={season.robotPhoto.width}
+                              height={season.robotPhoto.height}
+                              className="absolute inset-0 h-full w-full object-cover"
+                              sizes="(min-width: 1024px) 31vw, (min-width: 640px) 44vw, 78vw"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-transparent" />
+                            <p className="relative text-sm font-bold text-white">{season.robotName}</p>
+                          </>
+                        ) : (
+                          <p className="text-sm font-bold text-gray-600">Robot photo coming soon</p>
+                        )}
                       </div>
                       <div className="mt-5 flex items-center justify-between gap-3">
                         <p className="text-sm font-bold uppercase tracking-wide text-red-700">{season.year}</p>

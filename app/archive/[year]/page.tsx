@@ -48,9 +48,25 @@ export default async function SeasonArchivePage({
         <div className="relative overflow-hidden rounded border border-gray-200 bg-white p-5 shadow-sm">
           <Image src="/greek-assets/cropped/gear-gold.png" alt="" aria-hidden="true" width={586} height={586} className="pointer-events-none absolute right-4 top-4 w-16 opacity-10" />
           <ImageIcon className="text-red-700" size={28} />
-          <h2 className="mt-4 text-2xl font-black">Robot Pic</h2>
-          <div className="mt-4 flex aspect-video items-end rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
-            <p className="text-sm font-bold text-gray-600">Robot photo placeholder</p>
+          <h2 className="mt-4 text-2xl font-black">Robot Photo</h2>
+          <div className="relative mt-4 flex aspect-video items-end overflow-hidden rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
+            {season.robotPhoto ? (
+              <>
+                <Image
+                  src={season.robotPhoto.src}
+                  alt={season.robotPhoto.alt}
+                  width={season.robotPhoto.width}
+                  height={season.robotPhoto.height}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  priority
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-transparent" />
+                <p className="relative text-sm font-bold text-white">{season.robotName}</p>
+              </>
+            ) : (
+              <p className="text-sm font-bold text-gray-600">Robot photo coming soon</p>
+            )}
           </div>
         </div>
 
