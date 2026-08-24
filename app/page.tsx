@@ -186,7 +186,7 @@ const homePhotos = [
   },
 ];
 
-const visibleRobotSeasons = seasons.filter((season) => season.robotName !== "TIM" && season.game !== "CHARGED UP");
+const visibleRobotSeasons = seasons.filter((season) => season.robotName !== "TIM" && season.game !== "RAPID REACT");
 
 const resources = [
   {
