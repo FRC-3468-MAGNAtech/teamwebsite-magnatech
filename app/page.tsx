@@ -142,15 +142,6 @@ type PublicCalendarEvent = (typeof eventList)[number] & { id?: string; calendarD
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const weekdayLabels = ["S", "M", "T", "W", "T", "F", "S"];
 
-const impactStats = [
-  ["TBD", "students mentored"],
-  ["31", "schools impacted"],
-  ["1,769", "team outreach hours"],
-  ["4", "first teams created"],
-  ["6", "camps hosted"],
-  ["45", "community events"],
-];
-
 const quickLinks = [
   { label: "Instagram", href: "https://www.instagram.com/magnatech_3468/", icon: Instagram },
   { label: "Facebook", href: "https://www.facebook.com/magnatech3468/", icon: Facebook },
@@ -233,9 +224,6 @@ function Nav() {
           </a>
           <a href="#subgroups" className="hover:text-red-700">
             Subgroups
-          </a>
-          <a href="#outreach" className="hover:text-red-700">
-            Outreach
           </a>
           <a href="#archive" className="hover:text-red-700">
             Archive
@@ -522,40 +510,6 @@ export default function MagnatechPublicSite() {
                 </a>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      <section id="outreach" className="site-grid relative overflow-hidden bg-white py-20">
-        <Image src="/greek-assets/cropped/laurel-vine.png" alt="" aria-hidden="true" width={164} height={864} className="pointer-events-none absolute right-0 hidden w-28 opacity-10 lg:block" />
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader title="Outreach">
-            Outreach, camps, and events connect MAGNAtech with schools and STEM programs across the community.
-          </SectionHeader>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {impactStats.map(([value, label]) => (
-              <div key={label} className="relative overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 text-center">
-                <Image src="/greek-assets/cropped/gear-gold.png" alt="" aria-hidden="true" width={586} height={586} className="pointer-events-none absolute -right-2 -top-2 w-10 opacity-20" />
-                <p className="text-4xl font-black text-red-700">{value}</p>
-                <p className="mt-2 text-sm font-bold uppercase tracking-wide text-gray-700">{label}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8 rounded border border-red-200 bg-red-50 p-6 text-center">
-            <h3 className="text-2xl font-black text-gray-950">Request a Robot Demo or STEM Station</h3>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-gray-700">
-              If you would like MAGNAtech to bring a robot demo or STEM station to your event, contact{" "}
-              <a href="mailto:alisonlovelady@opsb.net" className="font-black text-red-700 underline-offset-2 hover:underline">
-                alisonlovelady@opsb.net
-              </a>
-              .
-            </p>
-            <a
-              href="/resources"
-              className="mt-5 inline-flex items-center gap-2 rounded bg-red-700 px-5 py-3 text-sm font-black text-white hover:bg-red-800"
-            >
-              View outreach resources <ArrowRight size={16} />
-            </a>
           </div>
         </div>
       </section>
