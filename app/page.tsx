@@ -31,7 +31,7 @@ import {
   Wrench,
   Youtube,
 } from "lucide-react";
-import { programs, seasons } from "./archive/data";
+import { seasons } from "./archive/data";
 import { getSubgroupParent, subgroups } from "./subgroups/data";
 
 const tierIconMap = {
@@ -185,6 +185,8 @@ const homePhotos = [
     height: 1080,
   },
 ];
+
+const visibleRobotSeasons = seasons.filter((season) => season.robotName !== "TIM" && season.game !== "CHARGED UP");
 
 const resources = [
   {
@@ -626,14 +628,13 @@ export default function MagnatechPublicSite() {
           <SectionHeader title="Team Archive" />
           <div className="overflow-x-auto pb-2">
             <div className="flex snap-x gap-4">
-              {seasons.map((season) => (
+              {visibleRobotSeasons.map((season) => (
                 (() => {
                   const robotSymbol = season.robotSymbol;
                   return (
-                    <a
+                    <article
                       key={season.year}
-                      href={`/archive/${season.slug}`}
-                      className="relative min-w-[78%] snap-center overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 transition hover:border-[#c59a3d] hover:bg-white hover:shadow-sm sm:min-w-[44%] lg:min-w-[31%]"
+                      className="relative min-w-[78%] snap-center overflow-hidden rounded border border-gray-200 bg-gray-50 p-6 sm:min-w-[44%] lg:min-w-[31%]"
                     >
                       <Image src="/greek-assets/cropped/laurel-branch.png" alt="" aria-hidden="true" width={1102} height={618} className="pointer-events-none absolute right-5 top-5 w-11 rotate-6 opacity-25" />
                       <div className="relative flex aspect-video items-end overflow-hidden rounded bg-[linear-gradient(135deg,rgba(196,34,33,0.16),rgba(17,24,39,0.10)),repeating-linear-gradient(45deg,rgba(196,34,33,0.18)_0_1px,transparent_1px_18px)] p-4">
@@ -664,25 +665,11 @@ export default function MagnatechPublicSite() {
                       </div>
                       <h3 className="mt-2 text-2xl font-black">{season.game}</h3>
                       <p className="mt-3 text-sm leading-6 text-gray-600">{season.summary}</p>
-                    </a>
+                    </article>
                   );
                 })()
               ))}
             </div>
-          </div>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {programs.map((program) => (
-              <a
-                key={program.slug}
-                href={`/programs/${program.slug}`}
-                className="rounded border border-red-200 bg-red-50 p-6 transition hover:bg-red-100"
-              >
-                <p className="text-sm font-bold uppercase tracking-wide text-red-700">{program.name}</p>
-                <h3 className="mt-2 text-2xl font-black text-gray-950">{program.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-gray-700">{program.summary}</p>
-              </a>
-            ))}
           </div>
         </div>
       </section>
