@@ -275,8 +275,8 @@ function Nav() {
 export default function MagnatechPublicSite() {
   const [calendarEvents, setCalendarEvents] = useState<PublicCalendarEvent[]>(eventList);
   const [selectedCalendarDate, setSelectedCalendarDate] = useState("");
-  const [viewedMonth, setViewedMonth] = useState(5);
-  const [viewedYear, setViewedYear] = useState(2026);
+  const [viewedMonth, setViewedMonth] = useState(() => new Date().getMonth());
+  const [viewedYear, setViewedYear] = useState(() => new Date().getFullYear());
   const [newsletterState, setNewsletterState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [newsletterError, setNewsletterError] = useState("");
 
@@ -313,9 +313,20 @@ export default function MagnatechPublicSite() {
       .catch(() => undefined);
   }, []);
 
+  const sortedCalendarEvents = useMemo(
+    () =>
+      [...calendarEvents].sort((a, b) => {
+        if (!a.calendarDate && !b.calendarDate) return 0;
+        if (!a.calendarDate) return 1;
+        if (!b.calendarDate) return -1;
+        return a.calendarDate.localeCompare(b.calendarDate);
+      }),
+    [calendarEvents],
+  );
+
   const visibleCalendarEvents = useMemo(
-    () => selectedCalendarDate ? calendarEvents.filter((event) => event.calendarDate === selectedCalendarDate) : calendarEvents,
-    [calendarEvents, selectedCalendarDate],
+    () => selectedCalendarDate ? sortedCalendarEvents.filter((event) => event.calendarDate === selectedCalendarDate) : sortedCalendarEvents,
+    [sortedCalendarEvents, selectedCalendarDate],
   );
 
   const eventDatesInView = useMemo(
