@@ -275,6 +275,7 @@ function Nav() {
 export default function MagnatechPublicSite() {
   const [calendarEvents, setCalendarEvents] = useState<PublicCalendarEvent[]>(eventList);
   const [selectedCalendarDate, setSelectedCalendarDate] = useState("");
+  const [showAllUpcomingEvents, setShowAllUpcomingEvents] = useState(false);
   const [viewedMonth, setViewedMonth] = useState(() => new Date().getMonth());
   const [viewedYear, setViewedYear] = useState(() => new Date().getFullYear());
   const [newsletterState, setNewsletterState] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -333,6 +334,19 @@ export default function MagnatechPublicSite() {
     () => new Set(calendarEvents.map((event) => event.calendarDate).filter((date): date is string => Boolean(date))),
     [calendarEvents],
   );
+
+  const todayDateKey = useMemo(() => {
+    const now = new Date();
+    const pad = (value: number) => String(value).padStart(2, "0");
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  }, []);
+
+  const upcomingCalendarEvents = useMemo(
+    () => sortedCalendarEvents.filter((event) => event.calendarDate && event.calendarDate >= todayDateKey),
+    [sortedCalendarEvents, todayDateKey],
+  );
+
+  const defaultVisibleCalendarEvents = showAllUpcomingEvents ? upcomingCalendarEvents : upcomingCalendarEvents.slice(0, 4);
 
   const calendarCells = useMemo(() => {
     const firstWeekday = new Date(viewedYear, viewedMonth, 1).getDay();
@@ -614,21 +628,54 @@ export default function MagnatechPublicSite() {
               {selectedCalendarDate && <button type="button" onClick={() => setSelectedCalendarDate("")} className="mt-4 text-sm font-bold text-red-700 hover:text-red-800">Show all events</button>}
             </div>
             <div className="overflow-hidden rounded border border-gray-200 bg-white shadow-sm">
-              {visibleCalendarEvents.map((event) => (
-                <div key={event.title} className="grid gap-3 border-b border-gray-200 p-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:items-center">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-red-700">{event.type}</p>
-                    <h3 className="mt-1 font-black text-gray-950">{event.title}</h3>
-                    <p className="mt-1 flex items-center gap-2 text-sm text-gray-600">
-                      <MapPin size={15} /> {event.location}
-                    </p>
+              {selectedCalendarDate ? (
+                <>
+                  {visibleCalendarEvents.map((event) => (
+                    <div key={event.title} className="grid gap-3 border-b border-gray-200 p-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:items-center">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-wide text-red-700">{event.type}</p>
+                        <h3 className="mt-1 font-black text-gray-950">{event.title}</h3>
+                        <p className="mt-1 flex items-center gap-2 text-sm text-gray-600">
+                          <MapPin size={15} /> {event.location}
+                        </p>
+                      </div>
+                      <p className="flex items-center gap-2 text-sm font-bold text-red-700">
+                        <CalendarDays size={16} /> {event.date}
+                      </p>
+                    </div>
+                  ))}
+                  {visibleCalendarEvents.length === 0 && <p className="p-6 text-sm font-semibold text-gray-600">No events are scheduled for this date.</p>}
+                </>
+              ) : (
+                <>
+                  <div className={showAllUpcomingEvents ? "max-h-96 overflow-y-auto" : undefined}>
+                    {defaultVisibleCalendarEvents.map((event) => (
+                      <div key={event.title} className="grid gap-3 border-b border-gray-200 p-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:items-center">
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wide text-red-700">{event.type}</p>
+                          <h3 className="mt-1 font-black text-gray-950">{event.title}</h3>
+                          <p className="mt-1 flex items-center gap-2 text-sm text-gray-600">
+                            <MapPin size={15} /> {event.location}
+                          </p>
+                        </div>
+                        <p className="flex items-center gap-2 text-sm font-bold text-red-700">
+                          <CalendarDays size={16} /> {event.date}
+                        </p>
+                      </div>
+                    ))}
+                    {defaultVisibleCalendarEvents.length === 0 && <p className="p-6 text-sm font-semibold text-gray-600">No upcoming events are scheduled.</p>}
                   </div>
-                  <p className="flex items-center gap-2 text-sm font-bold text-red-700">
-                    <CalendarDays size={16} /> {event.date}
-                  </p>
-                </div>
-              ))}
-              {visibleCalendarEvents.length === 0 && <p className="p-6 text-sm font-semibold text-gray-600">No events are scheduled for this date.</p>}
+                  {upcomingCalendarEvents.length > 4 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllUpcomingEvents((value) => !value)}
+                      className="w-full border-t border-gray-200 p-3 text-sm font-bold text-red-700 hover:bg-gray-50"
+                    >
+                      {showAllUpcomingEvents ? "Show fewer" : "View all events"}
+                    </button>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
