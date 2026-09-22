@@ -105,6 +105,8 @@ export type OutreachRequestDetails = {
   contactName: string;
   email: string;
   phone: string;
+  preferredDates: string;
+  requestType: string;
   details: string;
 };
 
@@ -112,6 +114,8 @@ export async function sendOutreachRequestEmails(request: OutreachRequestDetails)
   const businessName = escapeHtml(request.businessName);
   const contactName = escapeHtml(request.contactName);
   const phone = escapeHtml(request.phone) || "Not provided";
+  const preferredDates = escapeHtml(request.preferredDates) || "Not specified";
+  const requestType = escapeHtml(request.requestType) || "Not specified";
   const details = escapeHtml(request.details) || "Not provided";
 
   const confirmationHtml = emailShell(`
@@ -120,6 +124,8 @@ export async function sendOutreachRequestEmails(request: OutreachRequestDetails)
     <p style="margin:0 0 4px;"><strong>Business:</strong> ${businessName}</p>
     <p style="margin:0 0 4px;"><strong>Contact:</strong> ${contactName}</p>
     <p style="margin:0 0 4px;"><strong>Phone:</strong> ${phone}</p>
+    <p style="margin:0 0 4px;"><strong>Request type:</strong> ${requestType}</p>
+    <p style="margin:0 0 4px;"><strong>Preferred dates:</strong> ${preferredDates}</p>
     <p style="margin:0 0 16px;"><strong>Details:</strong> ${details}</p>
   `);
 
@@ -129,6 +135,8 @@ export async function sendOutreachRequestEmails(request: OutreachRequestDetails)
     <p style="margin:0 0 4px;"><strong>Contact:</strong> ${contactName}</p>
     <p style="margin:0 0 4px;"><strong>Email:</strong> ${escapeHtml(request.email)}</p>
     <p style="margin:0 0 4px;"><strong>Phone:</strong> ${phone}</p>
+    <p style="margin:0 0 4px;"><strong>Request type:</strong> ${requestType}</p>
+    <p style="margin:0 0 4px;"><strong>Preferred dates:</strong> ${preferredDates}</p>
     <p style="margin:0 0 16px;"><strong>Details:</strong> ${details}</p>
   `);
 
@@ -141,8 +149,11 @@ export async function sendOutreachRequestEmails(request: OutreachRequestDetails)
 export type StemDaysSignupDetails = {
   parentName: string;
   parentEmail: string;
+  phone: string;
   childName: string;
+  grade: string;
   days: string[];
+  notes: string;
 };
 
 const stemDaysPaymentDeadline = "10/9";
@@ -151,6 +162,9 @@ const stemDaysContactEmail = "alisonlovelady@opsb.net";
 export async function sendStemDaysSignupEmails(signup: StemDaysSignupDetails) {
   const parentName = escapeHtml(signup.parentName);
   const childName = escapeHtml(signup.childName);
+  const grade = escapeHtml(signup.grade) || "Not specified";
+  const phone = escapeHtml(signup.phone) || "Not provided";
+  const notes = escapeHtml(signup.notes) || "None provided";
   const daysList = signup.days.map((day) => escapeHtml(day)).join(", ") || "Not specified";
 
   const confirmationHtml = emailShell(`
@@ -165,8 +179,11 @@ export async function sendStemDaysSignupEmails(signup: StemDaysSignupDetails) {
     <p style="margin:0 0 16px;">New STEM Days signup:</p>
     <p style="margin:0 0 4px;"><strong>Parent/Guardian:</strong> ${parentName}</p>
     <p style="margin:0 0 4px;"><strong>Parent email:</strong> ${escapeHtml(signup.parentEmail)}</p>
+    <p style="margin:0 0 4px;"><strong>Phone:</strong> ${phone}</p>
     <p style="margin:0 0 4px;"><strong>Child's name:</strong> ${childName}</p>
-    <p style="margin:0 0 16px;"><strong>Day(s) selected:</strong> ${daysList}</p>
+    <p style="margin:0 0 4px;"><strong>Grade:</strong> ${grade}</p>
+    <p style="margin:0 0 4px;"><strong>Day(s) selected:</strong> ${daysList}</p>
+    <p style="margin:0 0 16px;"><strong>Notes/allergies:</strong> ${notes}</p>
   `);
 
   await Promise.all([

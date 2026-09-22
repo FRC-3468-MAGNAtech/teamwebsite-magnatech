@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function FllOutreachPage() {
   return (
@@ -30,13 +30,6 @@ export default function FllOutreachPage() {
             <p className="mt-2 text-2xl font-black">BIOGLOW</p>
           </div>
         </div>
-
-        <a
-          href="#"
-          className="mt-5 inline-flex items-center gap-2 rounded bg-red-700 px-4 py-3 text-sm font-black text-white shadow-sm transition hover:bg-red-800"
-        >
-          FLL Team Documentation <ExternalLink size={16} />
-        </a>
       </section>
     </main>
   );

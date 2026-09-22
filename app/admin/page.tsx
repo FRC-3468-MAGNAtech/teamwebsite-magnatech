@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, FileText, LockKeyhole, LogOut, Mail } from "lucide-react";
+import { CalendarDays, FileText, GraduationCap, LockKeyhole, LogOut, Mail, Megaphone } from "lucide-react";
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -79,6 +79,8 @@ export default function AdminPage() {
           <Link href="/admin/calendar" className="group rounded border border-gray-200 bg-white p-7 shadow-sm transition hover:border-red-300 hover:shadow-md"><CalendarDays className="text-red-700" size={32} /><h2 className="mt-5 text-2xl font-black">Calendar</h2><p className="mt-2 text-sm leading-6 text-gray-600">Add, edit, and remove the events shown on the public calendar.</p><span className="mt-6 inline-flex text-sm font-black text-red-700">Manage calendar →</span></Link>
           <Link href="/sponsor-responses" className="group rounded border border-[#c59a3d]/40 bg-[#fff8e7] p-7 shadow-sm transition hover:border-[#c59a3d] hover:shadow-md"><FileText className="text-[#8a641d]" size={32} /><h2 className="mt-5 text-2xl font-black">Form Responses</h2><p className="mt-2 text-sm leading-6 text-gray-600">Review sponsorship intake submissions from local businesses.</p><span className="mt-6 inline-flex text-sm font-black text-[#8a641d]">View responses →</span></Link>
           <Link href="/admin/newsletter" className="group rounded border border-blue-200 bg-blue-50 p-7 shadow-sm transition hover:border-blue-300 hover:shadow-md"><Mail className="text-blue-900" size={32} /><h2 className="mt-5 text-2xl font-black">Newsletter</h2><p className="mt-2 text-sm leading-6 text-gray-600">Manage subscribers and send updates to the MAGNAtech mailing list.</p><span className="mt-6 inline-flex text-sm font-black text-blue-900">Manage newsletter →</span></Link>
+          <Link href="/admin/outreach/requests" className="group rounded border border-gray-200 bg-white p-7 shadow-sm transition hover:border-red-300 hover:shadow-md"><Megaphone className="text-red-700" size={32} /><h2 className="mt-5 text-2xl font-black">Outreach Requests</h2><p className="mt-2 text-sm leading-6 text-gray-600">Review and track outreach requests submitted by local businesses.</p><span className="mt-6 inline-flex text-sm font-black text-red-700">Manage requests →</span></Link>
+          <Link href="/admin/outreach/stem-days" className="group rounded border border-gray-200 bg-white p-7 shadow-sm transition hover:border-red-300 hover:shadow-md"><GraduationCap className="text-red-700" size={32} /><h2 className="mt-5 text-2xl font-black">STEM Days Signups</h2><p className="mt-2 text-sm leading-6 text-gray-600">Review signups, track payment status, and manage STEM Days attendance.</p><span className="mt-6 inline-flex text-sm font-black text-red-700">Manage signups →</span></Link>
         </div>
       </section>
     </main>
