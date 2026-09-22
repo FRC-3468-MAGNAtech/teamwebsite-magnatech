@@ -7,10 +7,13 @@ import {
   Amphora,
   ArrowRight,
   BadgeDollarSign,
+  Blocks,
+  CalendarCheck2,
   CalendarDays,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  Cpu,
   Crown,
   Download,
   Facebook,
@@ -22,6 +25,7 @@ import {
   Instagram,
   Landmark,
   MapPin,
+  Megaphone,
   Music2,
   ScrollText,
   Shield,
@@ -206,6 +210,33 @@ const resources = [
     title: "CAD and Code",
     detail: "Link GitHub and Onshape resources.",
     href: "#resources",
+  },
+];
+
+const outreachLinks = [
+  {
+    icon: Blocks,
+    title: "FLL Teams",
+    detail: "Meet our FIRST LEGO League teams and their current season.",
+    href: "/outreach/fll",
+  },
+  {
+    icon: Cpu,
+    title: "FTC Teams",
+    detail: "Meet our FIRST Tech Challenge teams and their current season.",
+    href: "/outreach/ftc",
+  },
+  {
+    icon: Megaphone,
+    title: "Request Outreach",
+    detail: "Invite MAGNAtech to demo or present at your business or event.",
+    href: "/outreach/request",
+  },
+  {
+    icon: CalendarCheck2,
+    title: "STEM Days Signup",
+    detail: "Sign up for an upcoming STEM Day with MAGNAtech.",
+    href: "/outreach/stem-days",
   },
 ];
 
@@ -571,6 +602,30 @@ export default function MagnatechPublicSite() {
                   <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-red-700">
                     View subgroup <ArrowRight size={16} />
                   </span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section id="outreach" className="site-grid py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader title="Outreach">
+            MAGNAtech brings community outreach, STEM demos, and competition team info to schools and businesses across West Monroe.
+          </SectionHeader>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {outreachLinks.map((link) => {
+              const OutreachIcon = link.icon;
+              return (
+                <a
+                  key={link.title}
+                  href={link.href}
+                  className="rounded border border-gray-200 bg-white p-6 shadow-sm transition hover:border-red-300 hover:shadow-md"
+                >
+                  <OutreachIcon className="text-red-700" size={28} />
+                  <h3 className="mt-4 text-lg font-black">{link.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-600">{link.detail}</p>
                 </a>
               );
             })}
