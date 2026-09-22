@@ -251,6 +251,9 @@ function Nav() {
           <a href="#subgroups" className="hover:text-red-700">
             Subgroups
           </a>
+          <a href="#outreach" className="hover:text-red-700">
+            Outreach
+          </a>
           <a href="#archive" className="hover:text-red-700">
             Archive
           </a>
