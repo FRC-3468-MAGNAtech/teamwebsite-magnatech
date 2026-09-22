@@ -636,7 +636,11 @@ export default function MagnatechPublicSite() {
       <section id="calendar" className="py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader title="Event Calendar">
-            Public demos, school visits, camps, and competitions show MAGNAtech in action.
+            Public demos, school visits, camps, and competitions show MAGNAtech in action. If you&apos;d like to request MAGNAtech for your event, please fill out our{" "}
+            <Link href="/outreach/request" className="font-bold text-red-700 underline hover:text-red-800">
+              outreach request form
+            </Link>
+            .
           </SectionHeader>
           <div className="grid gap-5 lg:grid-cols-[0.36fr_0.64fr]">
             <div className="rounded border border-gray-200 bg-white p-5 shadow-sm">
