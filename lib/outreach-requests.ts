@@ -75,3 +75,14 @@ export async function updateOutreachRequestStatus(id: string, status: OutreachRe
   submissions[index] = { ...submissions[index], status };
   await writeLocalSubmissions(submissions);
 }
+
+export async function deleteOutreachRequest(id: string) {
+  const firestore = getFirebaseFirestore();
+  if (firestore) {
+    await firestore.collection(submissionsCollection).doc(id).delete();
+    return;
+  }
+
+  const submissions = await getLocalSubmissions();
+  await writeLocalSubmissions(submissions.filter((submission) => submission.id !== id));
+}

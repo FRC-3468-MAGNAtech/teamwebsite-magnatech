@@ -4,6 +4,7 @@ import { adminSessionCookie, isValidAdminSession } from "@/lib/admin-auth";
 import { sendOutreachRequestEmails } from "@/lib/email";
 import {
   OutreachRequestStatus,
+  deleteOutreachRequest,
   getOutreachRequests,
   saveOutreachRequest,
   updateOutreachRequestStatus,
@@ -98,5 +99,19 @@ export async function PATCH(request: NextRequest) {
   }
 
   await updateOutreachRequestStatus(id, status);
+  return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(request: NextRequest) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = (await request.json()) as { id?: string };
+  if (!id) {
+    return NextResponse.json({ error: "Submission ID is required." }, { status: 400 });
+  }
+
+  await deleteOutreachRequest(id);
   return NextResponse.json({ ok: true });
 }

@@ -4,6 +4,7 @@ import { adminSessionCookie, isValidAdminSession } from "@/lib/admin-auth";
 import { sendStemDaysSignupEmails } from "@/lib/email";
 import {
   StemDaysStatus,
+  deleteStemDaysSignup,
   getStemDaysSignups,
   saveStemDaysSignup,
   updateStemDaysSignup,
@@ -107,5 +108,19 @@ export async function PATCH(request: NextRequest) {
   if (paid !== undefined) updates.paid = Boolean(paid);
 
   await updateStemDaysSignup(id, updates);
+  return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(request: NextRequest) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = (await request.json()) as { id?: string };
+  if (!id) {
+    return NextResponse.json({ error: "Submission ID is required." }, { status: 400 });
+  }
+
+  await deleteStemDaysSignup(id);
   return NextResponse.json({ ok: true });
 }

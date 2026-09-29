@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ClipboardList } from "lucide-react";
+import { ArrowLeft, ClipboardList, Trash2 } from "lucide-react";
 
 type OutreachRequestStatus = "new" | "contacted" | "closed";
 
@@ -51,6 +51,18 @@ export default function OutreachRequestsEditor({ initialSubmissions }: { initial
       setMessage("Unable to update the submission status.");
       return;
     }
+    await loadSubmissions();
+  }
+
+  async function deleteSubmission(id: string, businessName: string) {
+    if (!window.confirm(`Delete the outreach request from ${businessName}?`)) return;
+    setMessage("");
+    const response = await fetch("/api/outreach/request", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    if (!response.ok) {
+      setMessage("Unable to delete the submission.");
+      return;
+    }
+    setMessage("Submission deleted.");
     await loadSubmissions();
   }
 
@@ -116,15 +128,23 @@ export default function OutreachRequestsEditor({ initialSubmissions }: { initial
                   </div>
                   <div className="flex flex-col items-start gap-2 sm:items-end">
                     <p className="text-sm font-semibold text-gray-500">{new Date(submission.submittedAt).toLocaleString()}</p>
-                    <select
-                      value={submission.status}
-                      onChange={(event) => updateStatus(submission.id, event.target.value as OutreachRequestStatus)}
-                      className="rounded border border-gray-300 bg-white px-3 py-2 text-sm font-bold outline-red-300"
-                    >
-                      <option value="new">New</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="closed">Closed</option>
-                    </select>
+                    <div className="flex gap-2">
+                      <select
+                        value={submission.status}
+                        onChange={(event) => updateStatus(submission.id, event.target.value as OutreachRequestStatus)}
+                        className="rounded border border-gray-300 bg-white px-3 py-2 text-sm font-bold outline-red-300"
+                      >
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="closed">Closed</option>
+                      </select>
+                      <button
+                        onClick={() => deleteSubmission(submission.id, submission.businessName)}
+                        className="inline-flex items-center gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm font-bold text-red-800 hover:bg-red-100"
+                      >
+                        <Trash2 size={15} /> Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-5 grid gap-4 text-sm md:grid-cols-2">

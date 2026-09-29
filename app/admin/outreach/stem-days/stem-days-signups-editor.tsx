@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ClipboardList } from "lucide-react";
+import { ArrowLeft, ClipboardList, Trash2 } from "lucide-react";
 
 type StemDaysStatus = "new" | "contacted" | "closed";
 
@@ -52,6 +52,18 @@ export default function StemDaysSignupsEditor({ initialSubmissions }: { initialS
       setMessage("Unable to update the submission.");
       return;
     }
+    await loadSubmissions();
+  }
+
+  async function deleteSubmission(id: string, childName: string) {
+    if (!window.confirm(`Delete the STEM Days signup for ${childName}?`)) return;
+    setMessage("");
+    const response = await fetch("/api/outreach/stem-days", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    if (!response.ok) {
+      setMessage("Unable to delete the submission.");
+      return;
+    }
+    setMessage("Submission deleted.");
     await loadSubmissions();
   }
 
@@ -143,6 +155,12 @@ export default function StemDaysSignupsEditor({ initialSubmissions }: { initialS
                         }
                       >
                         Mark {submission.paid ? "unpaid" : "paid"}
+                      </button>
+                      <button
+                        onClick={() => deleteSubmission(submission.id, submission.childName)}
+                        className="inline-flex items-center gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm font-bold text-red-800 hover:bg-red-100"
+                      >
+                        <Trash2 size={15} /> Delete
                       </button>
                     </div>
                   </div>
