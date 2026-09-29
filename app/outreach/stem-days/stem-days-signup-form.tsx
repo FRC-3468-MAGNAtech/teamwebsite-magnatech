@@ -10,6 +10,15 @@ const dayOptions = [
   { value: "oct-15", label: "Oct 15" },
 ];
 
+const gradeOptions = [
+  { value: "3rd", label: "3rd Grade" },
+  { value: "4th", label: "4th Grade" },
+  { value: "5th", label: "5th Grade" },
+  { value: "6th", label: "6th Grade" },
+  { value: "7th", label: "7th Grade" },
+  { value: "8th", label: "8th Grade" },
+];
+
 export default function StemDaysSignupForm() {
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,6 +29,18 @@ export default function StemDaysSignupForm() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+
+    const childFirstName = String(formData.get("childFirstName") || "").trim();
+    const childLastName = String(formData.get("childLastName") || "").trim();
+    formData.delete("childFirstName");
+    formData.delete("childLastName");
+    formData.set("childName", `${childFirstName} ${childLastName}`.trim());
+
+    const parentFirstName = String(formData.get("parentFirstName") || "").trim();
+    const parentLastName = String(formData.get("parentLastName") || "").trim();
+    formData.delete("parentFirstName");
+    formData.delete("parentLastName");
+    formData.set("parentName", `${parentFirstName} ${parentLastName}`.trim());
 
     if (formData.getAll("days").length === 0) {
       setSubmitState("error");
@@ -52,24 +73,41 @@ export default function StemDaysSignupForm() {
     <form onSubmit={handleSubmit} className="space-y-5 rounded border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-bold text-gray-800">Child&apos;s Name *</span>
-          <input required name="childName" type="text" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
+          <span className="text-sm font-bold text-gray-800">Child&apos;s First Name *</span>
+          <input required name="childFirstName" type="text" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
+        </label>
+        <label className="block">
+          <span className="text-sm font-bold text-gray-800">Child&apos;s Last Name *</span>
+          <input required name="childLastName" type="text" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
         </label>
         <label className="block">
           <span className="text-sm font-bold text-gray-800">Grade *</span>
-          <input required name="grade" type="text" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
-        </label>
-        <label className="block">
-          <span className="text-sm font-bold text-gray-800">Parent/Guardian Name *</span>
-          <input required name="parentName" type="text" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
-        </label>
-        <label className="block">
-          <span className="text-sm font-bold text-gray-800">Parent/Guardian Email *</span>
-          <input required name="parentEmail" type="email" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
+          <select required name="grade" defaultValue="" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300">
+            <option value="" disabled>
+              Select grade
+            </option>
+            {gradeOptions.map((grade) => (
+              <option key={grade.value} value={grade.value}>
+                {grade.label}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="block">
           <span className="text-sm font-bold text-gray-800">Phone Number</span>
           <input name="phone" type="tel" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
+        </label>
+        <label className="block">
+          <span className="text-sm font-bold text-gray-800">Parent/Guardian First Name *</span>
+          <input required name="parentFirstName" type="text" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
+        </label>
+        <label className="block">
+          <span className="text-sm font-bold text-gray-800">Parent/Guardian Last Name *</span>
+          <input required name="parentLastName" type="text" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
+        </label>
+        <label className="block md:col-span-2">
+          <span className="text-sm font-bold text-gray-800">Parent/Guardian Email *</span>
+          <input required name="parentEmail" type="email" className="mt-2 w-full rounded border border-gray-300 bg-white px-3 py-3 text-sm outline-red-300" />
         </label>
       </div>
 
