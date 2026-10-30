@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
+  BadgeDollarSign,
   Blocks,
   CalendarCheck2,
   CalendarDays,
@@ -14,6 +15,7 @@ import {
   Cpu,
   Facebook,
   GraduationCap,
+  Handshake,
   Instagram,
   MapPin,
   Megaphone,
@@ -24,6 +26,8 @@ import {
 } from "lucide-react";
 import { seasons } from "./archive/data";
 import { getSubgroupParent, subgroups } from "./subgroups/data";
+
+const sponsorFormUrl = "https://www.zeffy.com/en-US/donation-form/rebel-alliance-2";
 
 const communityStats = [
   ["3468", "FRC team number"],
@@ -69,6 +73,7 @@ const quickLinks = [
   { label: "Facebook", href: "https://www.facebook.com/magnatech3468/", icon: Facebook },
   { label: "TikTok", href: "https://www.tiktok.com/@frcmagnatech3468", icon: Music2 },
   { label: "YouTube", href: "https://www.youtube.com/@frc3468.magnatech", icon: Youtube },
+  { label: "Become a Sponsor", href: sponsorFormUrl },
   { label: "Current Season Reveal Video", href: "https://youtu.be/ncbwmR5eJRc?si=IN4z1PlONDUouwYR" },
   { label: "The Blue Alliance Team Page", href: "https://www.thebluealliance.com/team/3468" },
   { label: "Community Event Calendar", href: "#calendar" },
@@ -202,6 +207,14 @@ function Nav() {
             Links
           </a>
         </nav>
+        <a
+          href={sponsorFormUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded bg-red-700 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-red-800"
+        >
+          Sponsor <Handshake size={16} />
+        </a>
       </div>
     </header>
   );
@@ -344,6 +357,14 @@ export default function MagnatechPublicSite() {
                 className="inline-flex items-center justify-center gap-2 rounded bg-white px-6 py-3 font-bold text-red-700 hover:bg-gray-100"
               >
                 Team Subgroups <ArrowRight size={18} />
+              </a>
+              <a
+                href={sponsorFormUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded border border-white/35 px-6 py-3 font-bold text-white hover:bg-white/10"
+              >
+                Become a Sponsor <BadgeDollarSign size={18} />
               </a>
             </div>
           </div>
