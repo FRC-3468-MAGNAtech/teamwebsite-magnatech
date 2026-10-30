@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
+  Amphora,
   ArrowRight,
   BadgeDollarSign,
   Blocks,
@@ -13,14 +14,22 @@ import {
   ChevronLeft,
   ChevronRight,
   Cpu,
+  Crown,
   Facebook,
+  Flame,
   GraduationCap,
   Handshake,
+  HeartHandshake,
   Instagram,
+  Landmark,
   MapPin,
   Megaphone,
   Music2,
+  ScrollText,
+  Shield,
   Sparkles,
+  Swords,
+  type LucideIcon,
   Wrench,
   Youtube,
 } from "lucide-react";
@@ -28,6 +37,75 @@ import { seasons } from "./archive/data";
 import { getSubgroupParent, subgroups } from "./subgroups/data";
 
 const sponsorFormUrl = "https://www.zeffy.com/en-US/donation-form/rebel-alliance-2";
+
+const tierIconMap = {
+  torch: Flame,
+  delphi: ScrollText,
+  corinthian: Amphora,
+  athenian: Shield,
+  spartan: Swords,
+  titan: Landmark,
+  olympian: Crown,
+} satisfies Record<string, LucideIcon>;
+
+const sponsorTiers = [
+  {
+    icon: tierIconMap.torch,
+    name: "Torch Supporter",
+    amount: "Up to $250",
+    summary: "A meaningful way for families, alumni, and local shops to support student robotics.",
+    benefits: ["Thank you letter", "Group social media recognition"],
+    previousIcons: [],
+  },
+  {
+    icon: tierIconMap.delphi,
+    name: "Delphi Partner",
+    amount: "$500+",
+    summary: "Community backing with visible support at our summer STEM camp.",
+    benefits: ["Business name on Summer STEM Camp shirt", "All previous benefits"],
+    previousIcons: [tierIconMap.torch],
+  },
+  {
+    icon: tierIconMap.corinthian,
+    name: "Corinthian Partner",
+    amount: "$1,000+",
+    summary: "A visible partnership for businesses investing in local STEM.",
+    benefits: ["Small business logo on Summer STEM Camp T-shirts", "Small business logo on competition shirts and pit banner", "All previous benefits"],
+    previousIcons: [tierIconMap.torch, tierIconMap.delphi],
+  },
+  {
+    icon: tierIconMap.athenian,
+    name: "Athenian Partner",
+    amount: "$2,500+",
+    summary: "Built for companies that want sustained community visibility.",
+    benefits: ["Medium business logo on competition shirts and pit banner", "Small business logo on the competition robot", "All previous benefits"],
+    previousIcons: [tierIconMap.torch, tierIconMap.delphi, tierIconMap.corinthian],
+  },
+  {
+    icon: tierIconMap.spartan,
+    name: "Spartan Partner",
+    amount: "$5,000+",
+    summary: "Presenting-level support with headline local recognition.",
+    benefits: ["Large business logo on competition shirts and pit banner", "Medium business logo on a robot", "Individual social media feature", "Business name attached to the team name", "All previous benefits"],
+    previousIcons: [tierIconMap.torch, tierIconMap.delphi, tierIconMap.corinthian, tierIconMap.athenian],
+  },
+  {
+    icon: tierIconMap.titan,
+    name: "Titan Partner",
+    amount: "$10,000+",
+    summary: "Premier partners helping shape the future of MAGNAtech.",
+    benefits: ["Large business logo on a robot", "Large business logo on Summer Camp T-shirts", "Invitation to team events, including VIP access to Bayou Regional", "All previous benefits"],
+    previousIcons: [tierIconMap.torch, tierIconMap.delphi, tierIconMap.corinthian, tierIconMap.athenian, tierIconMap.spartan],
+  },
+  {
+    icon: tierIconMap.olympian,
+    name: "Olympian Partner",
+    amount: "$15,000+",
+    summary: "Our highest-impact partnership for organizations ready to stand at the front of local STEM growth.",
+    benefits: ["Largest and most visible logo on robot", "On-site robot demo", "All previous benefits"],
+    previousIcons: [tierIconMap.torch, tierIconMap.delphi, tierIconMap.corinthian, tierIconMap.athenian, tierIconMap.spartan, tierIconMap.titan],
+  },
+];
 
 const communityStats = [
   ["3468", "FRC team number"],
@@ -191,6 +269,9 @@ function Nav() {
           </div>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-semibold text-gray-700 md:flex">
+          <a href="#sponsors" className="hover:text-red-700">
+            Sponsors
+          </a>
           <a href="#subgroups" className="hover:text-red-700">
             Subgroups
           </a>
@@ -403,6 +484,78 @@ export default function MagnatechPublicSite() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sponsors" className="site-grid bg-white py-20">
+        <div className="mx-auto mb-12 max-w-7xl overflow-hidden px-4 sm:px-6 lg:px-8" aria-hidden="true">
+          <Image src="/greek-assets/cropped/divider-red.png" alt="" width={1504} height={344} className="h-5 w-full object-cover object-center opacity-70" />
+        </div>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader title="Sponsor Us">
+            MAGNAtech sponsorship supports robot parts, travel, outreach events, training, and programs that bring STEM opportunities to our community.
+          </SectionHeader>
+          <div className="mb-8 flex justify-center">
+            <a
+              href={sponsorFormUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded bg-red-700 px-6 py-3 font-black text-white shadow-sm transition hover:bg-red-800"
+            >
+              Start sponsorship form <BadgeDollarSign size={18} />
+            </a>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {sponsorTiers.map((tier) => (
+              <article
+                key={tier.name}
+                className={`relative overflow-hidden rounded border border-gray-200 bg-white p-6 shadow-sm ${tier.name === "Olympian Partner" ? "lg:col-start-2" : ""}`}
+              >
+                <Image src="/greek-assets/cropped/gear-gold.png" alt="" aria-hidden="true" width={586} height={586} className="pointer-events-none absolute right-3 top-3 w-20 opacity-20" />
+                <h3 className="flex items-center gap-2 text-xl font-black text-gray-950">
+                  <tier.icon className="mt-0.5 shrink-0 text-red-700" size={22} />
+                  {tier.name}
+                </h3>
+                <p className="mt-1 text-2xl font-black text-red-700">{tier.amount}</p>
+                <p className="mt-4 text-sm leading-6 text-gray-600">{tier.summary}</p>
+                <ul className="mt-5 space-y-3 text-sm font-semibold text-gray-700">
+                  {tier.benefits.map((benefit) => (
+                    <li key={benefit} className="flex gap-2">
+                      <ChevronRight className="mt-0.5 shrink-0 text-red-700" size={16} />
+                      <span>
+                        {benefit}
+                        {benefit === "All previous benefits" && tier.previousIcons.length > 0 && (
+                          <span className="ml-2 inline-flex align-middle gap-1" aria-label="Previous sponsor tiers">
+                            {tier.previousIcons.map((PreviousIcon) => (
+                              <PreviousIcon key={PreviousIcon.displayName || PreviousIcon.name} size={15} className="text-red-700" />
+                            ))}
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <div className="rounded border border-gray-200 bg-gray-50 p-6">
+              <HeartHandshake className="text-red-700" size={28} />
+              <h3 className="mt-4 text-xl font-black">Mentorship</h3>
+              <p className="mt-2 text-sm leading-6 text-gray-600">
+                Local engineers, machinists, programmers, media pros, and business leaders can mentor the team.
+              </p>
+            </div>
+            <div className="rounded border border-gray-200 bg-gray-50 p-6">
+              <Wrench className="text-red-700" size={28} />
+              <h3 className="mt-4 text-xl font-black">In-Kind Support</h3>
+              <p className="mt-2 text-sm leading-6 text-gray-600">
+                Gift cards, meals, machining, printing, transportation support, and materials can all move the team forward.
+              </p>
             </div>
           </div>
         </div>
