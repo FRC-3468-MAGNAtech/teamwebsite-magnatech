@@ -504,7 +504,7 @@ export default function MagnatechPublicSite() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded bg-red-700 px-6 py-3 font-black text-white shadow-sm transition hover:bg-red-800"
             >
-              Start sponsorship form <BadgeDollarSign size={18} />
+              Sponsor Now <BadgeDollarSign size={18} />
             </a>
           </div>
 
