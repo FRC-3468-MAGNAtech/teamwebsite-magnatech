@@ -277,7 +277,7 @@ function Nav() {
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-semibold text-gray-700 md:flex">
           <a href="#sponsors" className="hover:text-red-700">
-            Sponsors
+            CANOPY Sponsors
           </a>
           <a href="#subgroups" className="hover:text-red-700">
             Subgroups
