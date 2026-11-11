@@ -15,6 +15,7 @@ import {
   ChevronRight,
   Cpu,
   Crown,
+  Download,
   Facebook,
   Flame,
   GraduationCap,
@@ -517,7 +518,7 @@ export default function MagnatechPublicSite() {
           <SectionHeader title="Sponsor Us">
             MAGNAtech sponsorship supports robot parts, travel, outreach events, training, and programs that bring STEM opportunities to our community.
           </SectionHeader>
-          <div className="mb-8 flex justify-center">
+          <div className="mb-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               href={sponsorFormUrl}
               target="_blank"
@@ -525,6 +526,13 @@ export default function MagnatechPublicSite() {
               className="inline-flex items-center gap-2 rounded bg-red-700 px-6 py-3 font-black text-white shadow-sm transition hover:bg-red-800"
             >
               Sponsor Now <BadgeDollarSign size={18} />
+            </a>
+            <a
+              href="/sponsorship-letter.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded border border-red-700 px-6 py-3 font-black text-red-700 shadow-sm transition hover:bg-red-50"
+            >
+              Download Sponsorship Letter <Download size={18} />
             </a>
           </div>
 
@@ -840,6 +848,15 @@ export default function MagnatechPublicSite() {
                 </a>
               );
             })}
+            <a
+              href="/sponsorship-letter.pdf"
+              download
+              className="rounded border border-gray-200 bg-white p-6 shadow-sm transition hover:border-red-300 hover:shadow-md"
+            >
+              <Download className="text-red-700" size={28} />
+              <h3 className="mt-4 text-lg font-black">Download Sponsorship Letter</h3>
+              <p className="mt-2 text-sm leading-6 text-gray-600">Get the official sponsorship letter PDF.</p>
+            </a>
           </div>
         </div>
       </section>
