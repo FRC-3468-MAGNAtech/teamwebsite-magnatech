@@ -143,6 +143,13 @@ const eventList = [
 
 type PublicCalendarEvent = (typeof eventList)[number] & { id?: string; calendarDate?: string };
 
+type PublicSponsor = {
+  id: string;
+  name: string;
+  tier: string;
+  logoUrl: string;
+};
+
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const weekdayLabels = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -309,6 +316,7 @@ export default function MagnatechPublicSite() {
   const [viewedYear, setViewedYear] = useState(() => new Date().getFullYear());
   const [newsletterState, setNewsletterState] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [newsletterError, setNewsletterError] = useState("");
+  const [sponsors, setSponsors] = useState<PublicSponsor[]>([]);
 
   async function handleNewsletterSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -340,6 +348,18 @@ export default function MagnatechPublicSite() {
         return response.json() as Promise<{ events: PublicCalendarEvent[] }>;
       })
       .then(({ events }) => setCalendarEvents(events))
+      .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/sponsors")
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Unable to load sponsors.");
+        }
+        return response.json() as Promise<{ sponsors: PublicSponsor[] }>;
+      })
+      .then(({ sponsors: fetchedSponsors }) => setSponsors(fetchedSponsors))
       .catch(() => undefined);
   }, []);
 
@@ -538,6 +558,28 @@ export default function MagnatechPublicSite() {
                     </li>
                   ))}
                 </ul>
+                {(() => {
+                  const tierSponsors = sponsors.filter((sponsor) => sponsor.tier === tier.name);
+                  if (tierSponsors.length === 0) {
+                    return null;
+                  }
+
+                  return (
+                    <div className="relative mt-5 flex flex-wrap items-center justify-center gap-4 border-t border-gray-100 pt-5">
+                      {tierSponsors.map((sponsor) => (
+                        <Image
+                          key={sponsor.id}
+                          src={sponsor.logoUrl}
+                          alt={sponsor.name}
+                          width={160}
+                          height={64}
+                          unoptimized
+                          className="h-12 w-auto object-contain"
+                        />
+                      ))}
+                    </div>
+                  );
+                })()}
               </article>
             ))}
           </div>

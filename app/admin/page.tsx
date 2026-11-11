@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { CalendarDays, GraduationCap, LockKeyhole, LogOut, Mail, Megaphone } from "lucide-react";
+import { BadgeDollarSign, CalendarDays, GraduationCap, LockKeyhole, LogOut, Mail, Megaphone } from "lucide-react";
 
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -80,6 +80,7 @@ export default function AdminPage() {
           <Link href="/admin/newsletter" className="group rounded border border-blue-200 bg-blue-50 p-7 shadow-sm transition hover:border-blue-300 hover:shadow-md"><Mail className="text-blue-900" size={32} /><h2 className="mt-5 text-2xl font-black">Newsletter</h2><p className="mt-2 text-sm leading-6 text-gray-600">Manage subscribers and send updates to the MAGNAtech mailing list.</p><span className="mt-6 inline-flex text-sm font-black text-blue-900">Manage newsletter →</span></Link>
           <Link href="/admin/outreach/requests" className="group rounded border border-gray-200 bg-white p-7 shadow-sm transition hover:border-red-300 hover:shadow-md"><Megaphone className="text-red-700" size={32} /><h2 className="mt-5 text-2xl font-black">Outreach Requests</h2><p className="mt-2 text-sm leading-6 text-gray-600">Review and track outreach requests submitted by local businesses.</p><span className="mt-6 inline-flex text-sm font-black text-red-700">Manage requests →</span></Link>
           <Link href="/admin/outreach/stem-days" className="group rounded border border-gray-200 bg-white p-7 shadow-sm transition hover:border-red-300 hover:shadow-md"><GraduationCap className="text-red-700" size={32} /><h2 className="mt-5 text-2xl font-black">STEM Days Signups</h2><p className="mt-2 text-sm leading-6 text-gray-600">Review signups, track payment status, and manage STEM Days attendance.</p><span className="mt-6 inline-flex text-sm font-black text-red-700">Manage signups →</span></Link>
+          <Link href="/admin/sponsors" className="group rounded border border-gray-200 bg-white p-7 shadow-sm transition hover:border-red-300 hover:shadow-md"><BadgeDollarSign className="text-red-700" size={32} /><h2 className="mt-5 text-2xl font-black">Sponsors</h2><p className="mt-2 text-sm leading-6 text-gray-600">Add, edit, and remove sponsor logos shown on the public sponsor tiers.</p><span className="mt-6 inline-flex text-sm font-black text-red-700">Manage sponsors →</span></Link>
         </div>
       </section>
     </main>
