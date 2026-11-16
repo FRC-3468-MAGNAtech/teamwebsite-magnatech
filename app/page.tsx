@@ -148,7 +148,7 @@ type PublicSponsor = {
   id: string;
   name: string;
   tier: string;
-  logoUrl: string;
+  logoUrl?: string;
 };
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -574,17 +574,27 @@ export default function MagnatechPublicSite() {
 
                   return (
                     <div className="relative mt-5 flex flex-wrap items-center justify-center gap-4 border-t border-gray-100 pt-5">
-                      {tierSponsors.map((sponsor) => (
-                        <Image
-                          key={sponsor.id}
-                          src={sponsor.logoUrl}
-                          alt={sponsor.name}
-                          width={160}
-                          height={64}
-                          unoptimized
-                          className="h-12 w-auto object-contain"
-                        />
-                      ))}
+                      {tierSponsors.map((sponsor) =>
+                        sponsor.logoUrl ? (
+                          <Image
+                            key={sponsor.id}
+                            src={sponsor.logoUrl}
+                            alt={sponsor.name}
+                            width={160}
+                            height={64}
+                            unoptimized
+                            className="h-12 w-auto object-contain"
+                          />
+                        ) : (
+                          // No logo: show the name as plain text in the display (Dalek) font, matching the 3rem logo height.
+                          <span
+                            key={sponsor.id}
+                            className="display-font flex min-h-12 max-w-full items-center justify-center text-center text-lg font-normal leading-tight text-gray-950 sm:whitespace-nowrap sm:text-xl"
+                          >
+                            {sponsor.name}
+                          </span>
+                        ),
+                      )}
                     </div>
                   );
                 })()}

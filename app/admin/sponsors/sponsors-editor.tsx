@@ -21,7 +21,7 @@ type Sponsor = {
   id: string;
   name: string;
   tier: SponsorTier;
-  logoUrl: string;
+  logoUrl?: string;
   createdAt: string;
 };
 
@@ -36,6 +36,7 @@ export default function SponsorsEditor({ initialSponsors }: { initialSponsors: S
   const [sponsors, setSponsors] = useState<Sponsor[]>(initialSponsors);
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [removeLogo, setRemoveLogo] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState("");
@@ -59,6 +60,7 @@ export default function SponsorsEditor({ initialSponsors }: { initialSponsors: S
   function resetForm() {
     setDraft(emptyDraft);
     setLogoFile(null);
+    setRemoveLogo(false);
     setEditingId(null);
   }
 
@@ -75,6 +77,9 @@ export default function SponsorsEditor({ initialSponsors }: { initialSponsors: S
     }
     if (editingId) {
       formData.set("id", editingId);
+      if (removeLogo && !logoFile) {
+        formData.set("removeLogo", "true");
+      }
     }
 
     try {
@@ -112,6 +117,7 @@ export default function SponsorsEditor({ initialSponsors }: { initialSponsors: S
     setEditingId(sponsor.id);
     setDraft({ name: sponsor.name, tier: sponsor.tier });
     setLogoFile(null);
+    setRemoveLogo(false);
     setMessage("");
   }
 
@@ -125,7 +131,7 @@ export default function SponsorsEditor({ initialSponsors }: { initialSponsors: S
   );
 
   const editingSponsor = editingId ? sponsors.find((sponsor) => sponsor.id === editingId) : null;
-  const activePreviewUrl = logoPreviewUrl || editingSponsor?.logoUrl || null;
+  const activePreviewUrl = logoPreviewUrl || (removeLogo ? null : editingSponsor?.logoUrl) || null;
 
   return (
     <main className="site-grid min-h-screen bg-gray-50 text-gray-950">
@@ -169,15 +175,31 @@ export default function SponsorsEditor({ initialSponsors }: { initialSponsors: S
               </select>
             </label>
             <label className="block text-sm font-bold">
-              Logo {editingId ? "(leave blank to keep the current logo)" : ""}
+              Logo (optional)
               <input
-                required={!editingId}
                 type="file"
                 accept="image/png,image/jpeg,image/webp,image/svg+xml"
-                onChange={(event) => setLogoFile(event.target.files?.[0] || null)}
+                onChange={(event) => {
+                  const file = event.target.files?.[0] || null;
+                  setLogoFile(file);
+                  if (file) {
+                    setRemoveLogo(false);
+                  }
+                }}
                 className="mt-2 w-full text-sm font-normal"
               />
+              <span className="mt-1 block text-xs font-normal text-gray-600">
+                If no logo is uploaded, the sponsor&apos;s name will be shown in text.
+                {editingId && editingSponsor?.logoUrl ? " Leave blank to keep the current logo." : ""}
+              </span>
             </label>
+            {editingId && editingSponsor?.logoUrl && !logoFile && (
+              <label className="flex items-center gap-2 text-sm font-bold text-red-800">
+                <input type="checkbox" checked={removeLogo} onChange={(event) => setRemoveLogo(event.target.checked)} className="h-4 w-4" />
+                Remove logo
+                <span className="font-normal text-gray-600">(deletes the file; name will be shown in text)</span>
+              </label>
+            )}
             {activePreviewUrl && (
               <div className="rounded border border-gray-200 bg-gray-50 p-4">
                 <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-500">Preview</p>
@@ -215,14 +237,20 @@ export default function SponsorsEditor({ initialSponsors }: { initialSponsors: S
                 <div className="mt-2 space-y-2">
                   {tierSponsors.map((sponsor) => (
                     <div key={sponsor.id} className="flex items-center gap-4 rounded border border-gray-200 bg-white p-4 shadow-sm">
-                      <Image
-                        src={sponsor.logoUrl}
-                        alt={sponsor.name}
-                        width={64}
-                        height={64}
-                        unoptimized
-                        className="h-12 w-12 shrink-0 object-contain"
-                      />
+                      {sponsor.logoUrl ? (
+                        <Image
+                          src={sponsor.logoUrl}
+                          alt={sponsor.name}
+                          width={64}
+                          height={64}
+                          unoptimized
+                          className="h-12 w-12 shrink-0 object-contain"
+                        />
+                      ) : (
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-gray-100 text-gray-400" title="No logo">
+                          <Building2 size={22} aria-label="No logo" />
+                        </div>
+                      )}
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-black text-gray-950">{sponsor.name}</p>
                         <p className="text-sm text-gray-600">{sponsor.tier}</p>

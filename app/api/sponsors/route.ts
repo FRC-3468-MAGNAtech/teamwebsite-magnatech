@@ -5,6 +5,7 @@ import { deleteSponsorLogo, uploadSponsorLogo } from "@/lib/sponsor-logo-storage
 import {
   Sponsor,
   SponsorTier,
+  SponsorUpdates,
   deleteSponsor,
   getSponsorById,
   getSponsors,
@@ -57,27 +58,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Please provide a sponsor name and a valid tier." }, { status: 400 });
   }
 
-  if (!(logo instanceof File) || logo.size === 0) {
-    return NextResponse.json({ error: "A logo file is required." }, { status: 400 });
-  }
+  // The logo is optional; sponsors without one are shown by name on the public site.
+  let logoUrl: string | undefined;
+  if (logo instanceof File && logo.size > 0) {
+    const logoError = validateLogoFile(logo);
+    if (logoError) {
+      return NextResponse.json({ error: logoError }, { status: 400 });
+    }
 
-  const logoError = validateLogoFile(logo);
-  if (logoError) {
-    return NextResponse.json({ error: logoError }, { status: 400 });
-  }
-
-  let logoUrl: string;
-  try {
-    logoUrl = await uploadSponsorLogo(logo);
-  } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to upload the logo." }, { status: 500 });
+    try {
+      logoUrl = await uploadSponsorLogo(logo);
+    } catch (error) {
+      return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to upload the logo." }, { status: 500 });
+    }
   }
 
   const sponsor: Sponsor = {
     id: randomUUID(),
     name,
     tier: tier as SponsorTier,
-    logoUrl,
+    ...(logoUrl ? { logoUrl } : {}),
     createdAt: new Date().toISOString(),
   };
 
@@ -95,6 +95,7 @@ export async function PATCH(request: NextRequest) {
   const name = getText(formData, "name");
   const tier = getText(formData, "tier");
   const logo = formData.get("logo");
+  const removeLogo = getText(formData, "removeLogo") === "true";
 
   if (!id || !name || !tier || !sponsorTierSet.has(tier)) {
     return NextResponse.json({ error: "Please provide a sponsor name and a valid tier." }, { status: 400 });
@@ -105,7 +106,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: "Sponsor not found." }, { status: 404 });
   }
 
-  const updates: Partial<Pick<Sponsor, "name" | "tier" | "logoUrl">> = { name, tier: tier as SponsorTier };
+  const updates: SponsorUpdates = { name, tier: tier as SponsorTier };
 
   if (logo instanceof File && logo.size > 0) {
     const logoError = validateLogoFile(logo);
@@ -118,11 +119,14 @@ export async function PATCH(request: NextRequest) {
     } catch (error) {
       return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to upload the logo." }, { status: 500 });
     }
+  } else if (removeLogo && existing.logoUrl) {
+    updates.logoUrl = null;
   }
 
   await updateSponsor(id, updates);
 
-  if (updates.logoUrl) {
+  // A new upload replaces the old file; an explicit removal clears it. Either way the old blob goes.
+  if (updates.logoUrl !== undefined && existing.logoUrl) {
     await deleteSponsorLogo(existing.logoUrl).catch(() => undefined);
   }
 
@@ -142,7 +146,7 @@ export async function DELETE(request: NextRequest) {
   const existing = await getSponsorById(id);
   await deleteSponsor(id);
 
-  if (existing) {
+  if (existing?.logoUrl) {
     await deleteSponsorLogo(existing.logoUrl).catch(() => undefined);
   }
 

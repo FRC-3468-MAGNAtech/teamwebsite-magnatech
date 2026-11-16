@@ -1,6 +1,7 @@
 import "server-only";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
+import { FieldValue } from "firebase-admin/firestore";
 import { getFirebaseFirestore } from "@/lib/firebase-admin";
 
 export const sponsorTierNames = [
@@ -19,7 +20,7 @@ export type Sponsor = {
   id: string;
   name: string;
   tier: SponsorTier;
-  logoUrl: string;
+  logoUrl?: string;
   createdAt: string;
 };
 
@@ -69,10 +70,17 @@ export async function saveSponsor(sponsor: Sponsor) {
   await writeLocalSponsors(sponsors);
 }
 
-export async function updateSponsor(id: string, updates: Partial<Pick<Sponsor, "name" | "tier" | "logoUrl">>) {
+// `logoUrl: null` removes the logo; omitting `logoUrl` leaves it unchanged.
+export type SponsorUpdates = Partial<Pick<Sponsor, "name" | "tier">> & { logoUrl?: string | null };
+
+export async function updateSponsor(id: string, updates: SponsorUpdates) {
   const firestore = getFirebaseFirestore();
   if (firestore) {
-    await firestore.collection(sponsorsCollection).doc(id).update(updates);
+    const { logoUrl, ...rest } = updates;
+    await firestore
+      .collection(sponsorsCollection)
+      .doc(id)
+      .update({ ...rest, ...(logoUrl === null ? { logoUrl: FieldValue.delete() } : logoUrl !== undefined ? { logoUrl } : {}) });
     return;
   }
 
@@ -82,7 +90,14 @@ export async function updateSponsor(id: string, updates: Partial<Pick<Sponsor, "
     return;
   }
 
-  sponsors[index] = { ...sponsors[index], ...updates };
+  const { logoUrl, ...rest } = updates;
+  const updated: Sponsor = { ...sponsors[index], ...rest };
+  if (logoUrl === null) {
+    delete updated.logoUrl;
+  } else if (logoUrl !== undefined) {
+    updated.logoUrl = logoUrl;
+  }
+  sponsors[index] = updated;
   await writeLocalSponsors(sponsors);
 }
 
